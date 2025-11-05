@@ -8,9 +8,11 @@ import ContactUs from './components/ContactUs'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AdminProjects from './components/admin/AdminProjects'
+import AdminTeam from './components/admin/AdminTeam'
 import AdminManageAdmins from './components/admin/AdminManageAdmins'
 import AdminSettings from './components/admin/AdminSettings'
 import ProjectForm from './components/admin/ProjectForm'
+import TeamForm from './components/admin/TeamForm'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 
 function App() {
@@ -55,6 +57,30 @@ function App() {
         element={
           <ProtectedRoute>
             <ProjectForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/team"
+        element={
+          <ProtectedRoute>
+            <AdminTeam />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/team/create"
+        element={
+          <ProtectedRoute>
+            <TeamForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/team/edit/:id"
+        element={
+          <ProtectedRoute>
+            <TeamForm />
           </ProtectedRoute>
         }
       />

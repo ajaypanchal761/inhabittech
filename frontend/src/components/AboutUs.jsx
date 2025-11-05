@@ -1,38 +1,30 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
-import image1 from '../assets/images (1).jpeg'
-import image2 from '../assets/images (2).jpeg'
-import image3 from '../assets/images (3).jpeg'
-import image4 from '../assets/images (4).jpeg'
+import { teamAPI } from '../services/api'
 
 function AboutUs() {
-  const teamMembers = [
-    {
-      name: 'Sarah Johnson',
-      role: 'CEO & Founder',
-      description: '15+ years in hospitality technology, former VP at Marriott International',
-      image: image1
-    },
-    {
-      name: 'Michael Chen',
-      role: 'CTO',
-      description: 'Former Google engineer, expert in cloud architecture and AI systems',
-      image: image2
-    },
-    {
-      name: 'Emily Rodriguez',
-      role: 'Head of Operations',
-      description: 'Operations specialist with 12 years at Hilton and Hyatt properties',
-      image: image3
-    },
-    {
-      name: 'David Kim',
-      role: 'Lead Developer',
-      description: 'Full-stack developer specializing in hospitality management systems',
-      image: image4
+  const [teamMembers, setTeamMembers] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchTeamMembers()
+  }, [])
+
+  const fetchTeamMembers = async () => {
+    try {
+      // Fetch only active team members for public display
+      const response = await teamAPI.getAllTeamMembers(true)
+      if (response.data && response.data.teamMembers) {
+        setTeamMembers(response.data.teamMembers)
+      }
+    } catch (error) {
+      console.error('Error fetching team members:', error)
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
 
   const values = [
     {
@@ -344,44 +336,55 @@ function AboutUs() {
           </p>
 
           {/* Team Member Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {teamMembers.map((member, index) => (
-              <div 
-                key={index}
-                className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
-              >
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#1A2B5B] border-t-transparent mb-4"></div>
+              <p style={{ color: '#6B6B6B' }}>Loading team members...</p>
+            </div>
+          ) : teamMembers.length === 0 ? (
+            <div className="text-center py-12">
+              <p style={{ color: '#6B6B6B' }}>No team members available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {teamMembers.map((member) => (
                 <div 
-                  className="w-full h-48 md:h-56 bg-gray-200 flex items-center justify-center"
+                  key={member._id}
+                  className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                  {member.image && (
+                    <div className="w-full h-48 md:h-56 bg-gray-200 flex items-center justify-center">
+                      <img 
+                        src={member.image.url} 
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4 md:p-6">
+                    <h3 
+                      className="text-lg md:text-xl font-extrabold mb-1"
+                      style={{ color: '#1A2B5B' }}
+                    >
+                      {member.name}
+                    </h3>
+                    <p 
+                      className="text-sm md:text-base mb-3"
+                      style={{ color: '#1A2B5B' }}
+                    >
+                      {member.role}
+                    </p>
+                    <p 
+                      className="text-sm md:text-base leading-relaxed"
+                      style={{ color: '#6B6B6B' }}
+                    >
+                      {member.description}
+                    </p>
+                  </div>
                 </div>
-                <div className="p-4 md:p-6">
-                  <h3 
-                    className="text-lg md:text-xl font-extrabold mb-1"
-                    style={{ color: '#1A2B5B' }}
-                  >
-                    {member.name}
-                  </h3>
-                  <p 
-                    className="text-sm md:text-base mb-3"
-                    style={{ color: '#1A2B5B' }}
-                  >
-                    {member.role}
-                  </p>
-                  <p 
-                    className="text-sm md:text-base leading-relaxed"
-                    style={{ color: '#6B6B6B' }}
-                  >
-                    {member.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
