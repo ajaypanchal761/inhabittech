@@ -140,10 +140,12 @@ function ProjectForm() {
     setLoading(true);
 
     try {
-      const projectData = {
-        ...formData,
-        deleteImages: imagesToDelete.length > 0 ? imagesToDelete : undefined
-      };
+      const projectData = { ...formData };
+      
+      // Only add deleteImages if there are images to delete
+      if (imagesToDelete.length > 0) {
+        projectData.deleteImages = imagesToDelete;
+      }
 
       if (isEditMode) {
         await projectAPI.updateProject(id, projectData, images);

@@ -166,10 +166,21 @@ export const projectAPI = {
     
     // Append project data
     Object.keys(projectData).forEach(key => {
+      const value = projectData[key];
+      
+      // Skip undefined, null, or empty string values
+      if (value === undefined || value === null || value === '') {
+        return;
+      }
+      
+      // Handle arrays and objects that need JSON stringification
       if (key === 'technologies' || key === 'challenges' || key === 'solutions' || key === 'deleteImages') {
-        formData.append(key, JSON.stringify(projectData[key]));
-      } else if (projectData[key] !== undefined && projectData[key] !== null) {
-        formData.append(key, projectData[key]);
+        // Only stringify if it's an array and has items
+        if (Array.isArray(value) && value.length > 0) {
+          formData.append(key, JSON.stringify(value));
+        }
+      } else {
+        formData.append(key, value);
       }
     });
     
