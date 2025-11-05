@@ -75,7 +75,7 @@ function Projects() {
               return (
                 <div 
                   key={project._id}
-                  className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col"
+                  className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col hover:-translate-y-1"
                 >
                   {/* Image Container with Badge */}
                   <div className="relative w-full h-48 md:h-56 lg:h-64 overflow-hidden rounded-t-lg">
