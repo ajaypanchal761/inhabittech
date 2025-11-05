@@ -10,7 +10,7 @@ function ReadyToStart() {
         >
           {/* Heading */}
           <h3 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 text-center"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-3 text-center"
             style={{ 
               fontSize: '48px',
               fontWeight: '700',

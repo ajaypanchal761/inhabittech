@@ -42,13 +42,13 @@ function Hero() {
         </div>
 
         {/* Main Heading - Two Lines with Color Split */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 leading-tight">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-6 md:mb-8 leading-tight">
           <span className="text-white">Expert </span>
           <span style={{ color: '#4ECDC4' }}>Consultation</span>
           <span className="text-white"> for</span>
           <br />
           <span className="text-white">Technology </span>
-          <span style={{ color: '#FFD700' }}>Transitions</span>
+          <span className="text-orange-400">Transitions</span>
         </h1>
 
         {/* Sub-heading/Description */}
@@ -61,8 +61,10 @@ function Hero() {
           {/* Left Button - Orange with Arrow */}
           <a
             href="#contact"
-            style={{ backgroundColor: '#FF6B35' }}
-            className="group text-white px-8 py-4 rounded-lg font-medium text-base md:text-lg transition-all duration-200 hover:bg-[#E55A2A] flex items-center gap-2 whitespace-nowrap"
+            className="group text-white px-8 py-4 rounded-lg font-medium text-base md:text-lg transition-all duration-200 flex items-center gap-2 whitespace-nowrap hover:opacity-90"
+            style={{ 
+              background: 'linear-gradient(to right, #f97316, #ea580c)'
+            }}
           >
             Start Your Transformation
             <svg 

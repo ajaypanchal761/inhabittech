@@ -128,7 +128,7 @@ function Projects() {
     <section id="projects" className="pt-16 md:pt-24 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4" style={{ color: '#2A7F7F' }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-4" style={{ color: '#2A7F7F' }}>
           Our Projects
         </h2>
         
@@ -163,8 +163,7 @@ function Projects() {
                 />
                 {/* Completed Badge */}
                 <div 
-                  className="absolute top-3 right-3 px-3 py-1 rounded-lg text-white text-xs font-medium"
-                  style={{ backgroundColor: '#4ECDC4' }}
+                  className="absolute top-3 right-3 px-3 py-1 rounded-lg bg-green-500 text-white text-xs font-medium"
                 >
                   Completed
                 </div>

@@ -30,7 +30,7 @@ function ContactForm() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header Section */}
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6">
             <span style={{ color: '#4ECDC4' }}>Ready to Transform Your</span>{' '}
             <span style={{ color: '#FF6B35' }}>Hotel Technology?</span>
           </h2>
@@ -50,7 +50,7 @@ function ContactForm() {
             }}
           >
             <h3 
-              className="text-2xl md:text-3xl font-bold mb-6 md:mb-8"
+              className="text-2xl md:text-3xl font-extrabold mb-6 md:mb-8"
               style={{ color: '#4ECDC4' }}
             >
               Get in Touch
@@ -110,7 +110,7 @@ function ContactForm() {
             {/* Why Choose Our Consultation */}
             <div>
               <h4 
-                className="text-xl md:text-2xl font-bold mb-4 md:mb-6"
+                className="text-xl md:text-2xl font-extrabold mb-4 md:mb-6"
                 style={{ color: '#4ECDC4' }}
               >
                 Why Choose Our Consultation?

@@ -5,7 +5,7 @@ function About() {
         {/* Top Section: About Inhabit Tech */}
         <div className="text-center mb-8 md:mb-12">
           {/* Main Heading */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 md:mb-8">
             <span className="text-[#1A1A1A]">About</span>{' '}
             <span style={{ color: '#20C997' }}>Inhabit Tech</span>
           </h2>
@@ -51,7 +51,7 @@ function About() {
         {/* Middle Section: Your Technology Transition Partners */}
         <div className="mb-16 md:mb-20">
           {/* Main Heading */}
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-6 md:mb-8">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-center mb-6 md:mb-8">
             <span className="text-[#1A1A1A]">Your Technology</span>{' '}
             <span style={{ color: '#20C997' }}>Transition Partners</span>
           </h3>
@@ -64,7 +64,7 @@ function About() {
           {/* Four Service Blocks - 2x2 Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Top-Left: Strategic Assessment */}
-            <div className="bg-[#FAFAFA] p-6 md:p-8 text-center">
+            <div className="bg-transparent p-6 md:p-8 text-center">
               <div 
                 className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 mx-auto"
                 style={{ backgroundColor: '#E0F7F5' }}
@@ -79,7 +79,7 @@ function About() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h.01M12 12h.01M15 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
-              <h4 className="text-xl md:text-2xl font-bold text-[#1A1A1A] mb-3">
+                    <h4 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-3">
                 Strategic Assessment
               </h4>
               <p className="text-[#4A4A4A] text-base md:text-lg leading-relaxed">
@@ -88,7 +88,7 @@ function About() {
             </div>
 
             {/* Top-Right: Transition Planning */}
-            <div className="bg-[#FAFAFA] p-6 md:p-8 text-center">
+            <div className="bg-transparent p-6 md:p-8 text-center">
               <div 
                 className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 mx-auto"
                 style={{ backgroundColor: '#E0F7F5' }}
@@ -102,7 +102,7 @@ function About() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h4 className="text-xl md:text-2xl font-bold text-[#1A1A1A] mb-3">
+                    <h4 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-3">
                 Transition Planning
               </h4>
               <p className="text-[#4A4A4A] text-base md:text-lg leading-relaxed">
@@ -111,7 +111,7 @@ function About() {
             </div>
 
             {/* Bottom-Left: Change Management */}
-            <div className="bg-[#FAFAFA] p-6 md:p-8 text-center">
+            <div className="bg-transparent p-6 md:p-8 text-center">
               <div 
                 className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 mx-auto"
                 style={{ backgroundColor: '#E0F7F5' }}
@@ -126,7 +126,7 @@ function About() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
               </div>
-              <h4 className="text-xl md:text-2xl font-bold text-[#1A1A1A] mb-3">
+                    <h4 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-3">
                 Change Management
               </h4>
               <p className="text-[#4A4A4A] text-base md:text-lg leading-relaxed">
@@ -135,7 +135,7 @@ function About() {
             </div>
 
             {/* Bottom-Right: Risk Mitigation */}
-            <div className="bg-[#FAFAFA] p-6 md:p-8 text-center">
+            <div className="bg-transparent p-6 md:p-8 text-center">
               <div 
                 className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 mx-auto"
                 style={{ backgroundColor: '#E0F7F5' }}
@@ -149,7 +149,7 @@ function About() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h4 className="text-xl md:text-2xl font-bold text-[#1A1A1A] mb-3">
+                    <h4 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-3">
                 Risk Mitigation
               </h4>
               <p className="text-[#4A4A4A] text-base md:text-lg leading-relaxed">

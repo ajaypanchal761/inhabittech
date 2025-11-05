@@ -67,7 +67,7 @@ function ConsultationProcess() {
         </div>
 
         {/* Main Heading */}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 md:mb-6">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-4 md:mb-6">
           <span style={{ color: '#1A1A1A' }}>How We Guide Your</span>{' '}
           <span style={{ color: '#2A7F7F' }}>Technology Transition</span>
         </h2>

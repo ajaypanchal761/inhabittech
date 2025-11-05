@@ -1,12 +1,24 @@
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.png'
 
 function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const location = useLocation()
+  const isAboutPage = location.pathname === '/about'
+  const isServicesPage = location.pathname === '/services'
+  const isContactPage = location.pathname === '/contact'
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
       <nav className="w-full px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-16 md:h-20 relative">
           {/* Logo - Image from assets folder - Left side */}
-          <div className="flex items-center flex-shrink-0">
+          <Link to="/" className="flex items-center flex-shrink-0">
             <img 
               src={logo} 
               alt="Inhabit Tech Logo" 
@@ -16,28 +28,36 @@ function Header() {
                 opacity: 1
               }}
             />
-          </div>
+          </Link>
 
           {/* Navigation Links - Centered using flex with equal spacing */}
           <div className="hidden md:flex items-center space-x-8 lg:space-x-12 absolute left-1/2 transform -translate-x-1/2">
-            <a 
-              href="#home" 
+            <Link 
+              to="/" 
               className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
             >
               Home
-            </a>
-            <a 
-              href="#about" 
-              className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
+            </Link>
+            <Link 
+              to="/about" 
+              className={`transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap px-3 py-1 rounded ${
+                isAboutPage 
+                  ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
+                  : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+              }`}
             >
               About
-            </a>
-            <a 
-              href="#services" 
-              className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
+            </Link>
+            <Link 
+              to="/services" 
+              className={`transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap px-3 py-1 rounded ${
+                isServicesPage 
+                  ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
+                  : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+              }`}
             >
               Services
-            </a>
+            </Link>
             <a 
               href="#projects" 
               className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
@@ -45,25 +65,91 @@ function Header() {
               Projects
             </a>
             {/* Contact Us Button - Right after Projects */}
-            <a
-              href="#contact"
-              style={{ backgroundColor: '#3BB5AD' }}
-              className="hover:bg-[#2FA5A0] text-white px-5 lg:px-6 py-2.5 lg:py-3 rounded-lg font-semibold text-sm lg:text-base transition-colors duration-200 whitespace-nowrap"
+            <Link
+              to="/contact"
+              className={`px-5 lg:px-6 py-2.5 lg:py-3 rounded-lg font-semibold text-sm lg:text-base transition-colors duration-200 whitespace-nowrap ${
+                isContactPage 
+                  ? 'bg-[#2A7F7F] text-white' 
+                  : 'bg-[#3BB5AD] hover:bg-[#2FA5A0] text-white'
+              }`}
             >
               Contact Us
-            </a>
+            </Link>
           </div>
 
           {/* Hamburger Menu Button - Always visible on right */}
           <button 
-            className="text-[#1A1A1A] focus:outline-none flex-shrink-0"
+            className="md:hidden text-[#1A1A1A] focus:outline-none flex-shrink-0 z-50"
             aria-label="Toggle menu"
+            onClick={toggleMenu}
           >
-            <svg className="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            {isMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </button>
         </div>
+
+        {/* Mobile Menu - Shows on small screens when menu is open */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-40">
+            <div className="flex flex-col px-4 py-4 space-y-3">
+              <Link 
+                to="/"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-base py-2"
+              >
+                Home
+              </Link>
+              <Link 
+                to="/about"
+                onClick={() => setIsMenuOpen(false)}
+                className={`transition-colors duration-200 font-medium text-base py-2 px-3 rounded ${
+                  isAboutPage 
+                    ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
+                    : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+                }`}
+              >
+                About
+              </Link>
+              <Link 
+                to="/services"
+                onClick={() => setIsMenuOpen(false)}
+                className={`transition-colors duration-200 font-medium text-base py-2 px-3 rounded ${
+                  isServicesPage 
+                    ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
+                    : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+                }`}
+              >
+                Services
+              </Link>
+              <a 
+                href="#projects"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-base py-2"
+              >
+                Projects
+              </a>
+              {/* Contact Us Button */}
+              <Link
+                to="/contact"
+                onClick={() => setIsMenuOpen(false)}
+                className={`px-5 py-2.5 rounded-lg font-semibold text-base transition-colors duration-200 text-center ${
+                  isContactPage 
+                    ? 'bg-[#2A7F7F] text-white' 
+                    : 'bg-[#3BB5AD] hover:bg-[#2FA5A0] text-white'
+                }`}
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
     </header>
   )
