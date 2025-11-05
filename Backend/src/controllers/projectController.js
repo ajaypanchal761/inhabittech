@@ -70,29 +70,54 @@ export const createProject = async (req, res, next) => {
     // Handle images from upload
     const images = [];
     if (req.files && req.files.length > 0) {
-      req.files.forEach((file, index) => {
-        // CloudinaryStorage returns: secure_url, url, public_id, etc.
-        // Memory storage returns: buffer
-        let imageUrl, publicId;
+      for (let i = 0; i < req.files.length; i++) {
+        const file = req.files[i];
 
-        if (file.secure_url || file.url || file.path) {
-          // Cloudinary storage
-          imageUrl = file.secure_url || file.url || file.path;
-          publicId = file.public_id || file.filename;
-        } else if (file.buffer) {
-          // Memory storage (fallback) - would need to upload to Cloudinary manually
-          // Skip these files as Cloudinary may not be configured
-          return;
-        }
+        // CloudinaryStorage returns file object with Cloudinary upload response
+        // The file object itself IS the Cloudinary upload result
+        // Properties: url, secure_url, public_id, path, filename, etc.
+        const imageUrl = file.secure_url || file.url || file.path;
+        const publicId = file.public_id || file.filename;
 
         if (imageUrl && publicId) {
+          // File is from CloudinaryStorage - already uploaded
           images.push({
             url: imageUrl,
             publicId: publicId,
-            isPrimary: index === 0
+            isPrimary: i === 0
           });
+        } else if (file.buffer) {
+          // File is from memory storage - need to upload to Cloudinary manually
+          // This happens when CloudinaryStorage fails or Cloudinary is not configured
+          try {
+            const result = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                  folder: 'inhabittech/projects',
+                  allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+                  transformation: [{ width: 1920, height: 1080, crop: 'limit' }],
+                },
+                (error, result) => {
+                  if (error) reject(error);
+                  else resolve(result);
+                }
+              );
+              uploadStream.end(file.buffer);
+            });
+
+            if (result && (result.secure_url || result.url)) {
+              images.push({
+                url: result.secure_url || result.url,
+                publicId: result.public_id,
+                isPrimary: i === 0
+              });
+            }
+          } catch (uploadError) {
+            // If upload fails, skip this image
+            // Continue with other images
+          }
         }
-      });
+      }
     }
 
     // Parse arrays if they are strings (from FormData)
@@ -152,7 +177,10 @@ export const createProject = async (req, res, next) => {
       images
     });
 
-    sendSuccess(res, 'Project created successfully', { project }, 201);
+    // Fetch the created project to ensure all fields are included
+    const createdProject = await Project.findById(project._id);
+
+    sendSuccess(res, 'Project created successfully', { project: createdProject }, 201);
   } catch (error) {
     // Delete uploaded images if project creation fails
     if (req.files && req.files.length > 0) {
@@ -199,34 +227,89 @@ export const updateProject = async (req, res, next) => {
     // Handle new images
     const newImages = [];
     if (req.files && req.files.length > 0) {
-      req.files.forEach((file, index) => {
-        // CloudinaryStorage returns: secure_url, url, public_id, etc.
+      for (let i = 0; i < req.files.length; i++) {
+        const file = req.files[i];
+
+        // CloudinaryStorage returns file object with Cloudinary upload response
+        // The file object itself IS the Cloudinary upload result
+        // Properties: url, secure_url, public_id, path, filename, etc.
         const imageUrl = file.secure_url || file.url || file.path;
         const publicId = file.public_id || file.filename;
 
         if (imageUrl && publicId) {
+          // File is from CloudinaryStorage - already uploaded
           newImages.push({
             url: imageUrl,
             publicId: publicId,
-            isPrimary: index === 0 && project.images.length === 0
+            isPrimary: i === 0 && project.images.length === 0
           });
+        } else if (file.buffer) {
+          // File is from memory storage - need to upload to Cloudinary manually
+          // This happens when CloudinaryStorage fails or Cloudinary is not configured
+          try {
+            const result = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                  folder: 'inhabittech/projects',
+                  allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+                  transformation: [{ width: 1920, height: 1080, crop: 'limit' }],
+                },
+                (error, result) => {
+                  if (error) reject(error);
+                  else resolve(result);
+                }
+              );
+              uploadStream.end(file.buffer);
+            });
+
+            if (result && (result.secure_url || result.url)) {
+              newImages.push({
+                url: result.secure_url || result.url,
+                publicId: result.public_id,
+                isPrimary: i === 0 && project.images.length === 0
+              });
+            }
+          } catch (uploadError) {
+            // If upload fails, skip this image
+            // Continue with other images
+          }
         }
-      });
+      }
     }
 
     // Handle image deletion
-    if (deleteImages) {
-      const deleteIds = typeof deleteImages === 'string'
-        ? JSON.parse(deleteImages)
-        : deleteImages;
+    if (deleteImages && deleteImages !== 'undefined' && deleteImages !== 'null') {
+      let deleteIds = [];
 
-      for (const publicId of deleteIds) {
-        await cloudinary.uploader.destroy(publicId).catch(console.error);
+      try {
+        if (typeof deleteImages === 'string') {
+          // Check if it's a valid JSON string
+          if (deleteImages.trim().startsWith('[') || deleteImages.trim().startsWith('{')) {
+            deleteIds = JSON.parse(deleteImages);
+          } else if (deleteImages.trim() !== '' && deleteImages.trim() !== 'undefined') {
+            // If it's not JSON, treat as single value array
+            deleteIds = [deleteImages];
+          }
+        } else if (Array.isArray(deleteImages)) {
+          deleteIds = deleteImages;
+        }
+
+        // Only proceed if we have valid delete IDs
+        if (Array.isArray(deleteIds) && deleteIds.length > 0) {
+          for (const publicId of deleteIds) {
+            if (publicId) {
+              await cloudinary.uploader.destroy(publicId).catch(() => { });
+            }
+          }
+
+          project.images = project.images.filter(
+            img => !deleteIds.includes(img.publicId)
+          );
+        }
+      } catch (e) {
+        // If parsing fails, skip image deletion
+        // Don't throw error, just log and continue
       }
-
-      project.images = project.images.filter(
-        img => !deleteIds.includes(img.publicId)
-      );
     }
 
     // Add new images
@@ -245,24 +328,40 @@ export const updateProject = async (req, res, next) => {
     if (projectType !== undefined) project.projectType = projectType;
     if (status) project.status = status;
 
-    if (technologies !== undefined) {
-      project.technologies = typeof technologies === 'string'
-        ? JSON.parse(technologies)
-        : technologies;
+    if (technologies !== undefined && technologies !== null && technologies !== 'undefined' && technologies !== 'null') {
+      try {
+        project.technologies = typeof technologies === 'string'
+          ? JSON.parse(technologies)
+          : Array.isArray(technologies) ? technologies : [];
+      } catch (e) {
+        project.technologies = Array.isArray(technologies) ? technologies : [];
+      }
     }
-    if (challenges !== undefined) {
-      project.challenges = typeof challenges === 'string'
-        ? JSON.parse(challenges)
-        : challenges;
+    if (challenges !== undefined && challenges !== null && challenges !== 'undefined' && challenges !== 'null') {
+      try {
+        project.challenges = typeof challenges === 'string'
+          ? JSON.parse(challenges)
+          : Array.isArray(challenges) ? challenges : [];
+      } catch (e) {
+        project.challenges = Array.isArray(challenges) ? challenges : [];
+      }
     }
-    if (solutions !== undefined) {
-      project.solutions = typeof solutions === 'string'
-        ? JSON.parse(solutions)
-        : solutions;
+    if (solutions !== undefined && solutions !== null && solutions !== 'undefined' && solutions !== 'null') {
+      try {
+        project.solutions = typeof solutions === 'string'
+          ? JSON.parse(solutions)
+          : Array.isArray(solutions) ? solutions : [];
+      } catch (e) {
+        project.solutions = Array.isArray(solutions) ? solutions : [];
+      }
     }
 
     await project.save();
-    sendSuccess(res, 'Project updated successfully', { project });
+
+    // Fetch the updated project to ensure all fields are included
+    const updatedProject = await Project.findById(project._id);
+
+    sendSuccess(res, 'Project updated successfully', { project: updatedProject });
   } catch (error) {
     // Delete uploaded images if update fails
     if (req.files && req.files.length > 0) {
