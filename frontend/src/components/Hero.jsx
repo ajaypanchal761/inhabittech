@@ -1,16 +1,15 @@
-import heroImage from '../assets/images.jpeg'
-
 function Hero() {
   return (
     <section className="relative min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Dark Teal Overlay and Gradient */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage}
-          alt="Hotel lobby"
-          className="w-full h-full object-cover"
-          style={{ filter: 'blur(2px)' }}
-        />
+        {/* Background Image - Using same CSS as bg.txt */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: 'url("https://readdy.ai/api/search-image?query=Modern%20luxury%20hotel%20lobby%20with%20advanced%20technology%20integration%2C%20smart%20lighting%20systems%2C%20digital%20displays%2C%20contemporary%20architecture%2C%20professional%20hospitality%20environment%2C%20clean%20minimalist%20design%2C%20high-tech%20atmosphere&width=1920&height=1080&seq=hero-bg&orientation=landscape")'
+          }}
+        ></div>
         {/* Dark Teal Overlay with Gradient */}
         <div 
           className="absolute inset-0 bg-gradient-to-br"
@@ -76,24 +75,35 @@ function Hero() {
             </svg>
           </a>
 
-          {/* Right Button - Transparent with Dark Green Border */}
+          {/* Right Button - Same CSS as bg.txt */}
           <a
             href="#services"
-            className="px-8 py-4 rounded-lg font-medium text-base md:text-lg transition-all duration-200 hover:bg-[#0D4A3A]/10 flex items-center gap-2 whitespace-nowrap"
+            className="group px-8 py-4 border-2 font-semibold rounded-lg transition-all duration-300 whitespace-nowrap cursor-pointer hover:scale-105"
             style={{ 
-              color: '#0D4A3A',
-              border: '2px solid #0D4A3A'
+              borderColor: '#4ECDC4',
+              color: '#4ECDC4',
+              backgroundColor: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#4ECDC4';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#4ECDC4';
             }}
           >
-            Explore Solutions
-            <svg 
-              className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <span className="flex items-center">
+              Explore Solutions
+              <svg 
+                className="w-5 h-5 ml-2 group-hover:rotate-45 transition-transform duration-300" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </span>
           </a>
         </div>
       </div>

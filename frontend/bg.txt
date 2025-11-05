@@ -1,0 +1,1 @@
+<button class="group px-8 py-4 border-2 border-teal-400 text-teal-400 font-semibold rounded-lg hover:bg-teal-400 hover:text-white transition-all duration-300 hover:scale-105 whitespace-nowrap cursor-pointer"><span class="flex items-center">Explore Solutions<i class="ri-external-link-line text-xl ml-2 group-hover:rotate-45 transition-transform duration-300"></i></span></button>

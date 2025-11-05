@@ -10,8 +10,11 @@ function Header() {
             <img 
               src={logo} 
               alt="Inhabit Tech Logo" 
-              className="h-16 md:h-20 lg:h-24 w-auto"
-              style={{ transform: 'translateY(-4px)' }}
+              className="h-20 md:h-24 lg:h-28 w-auto"
+              style={{ 
+                transform: 'translateY(-4px)',
+                opacity: 1
+              }}
             />
           </div>
 

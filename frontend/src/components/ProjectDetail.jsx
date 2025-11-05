@@ -84,7 +84,7 @@ function ProjectDetail() {
       style={{ backgroundColor: '#1A2B5B' }}
     >
       {/* Top Navigation */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 pb-12 md:pb-16">
         <button
           onClick={() => navigate('/')}
           className="flex items-center gap-2 text-white hover:opacity-70 transition-opacity mb-6 md:mb-8"
@@ -332,17 +332,17 @@ function ProjectDetail() {
 
         {/* Call-to-Action Section */}
         <div
-          className="rounded-xl p-8 md:p-12 text-center mb-8 md:mb-12"
-          style={{ backgroundColor: '#87CEEB' }}
+          className="rounded-xl p-6 md:p-8 text-center pb-8 md:pb-10 mb-12 md:mb-16"
+          style={{ backgroundColor: '#1e40af' }}
         >
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4">
             Interested in Similar Solutions?
           </h2>
-          <p className="text-white text-base md:text-lg mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-white text-base md:text-lg mb-4 md:mb-6 max-w-3xl mx-auto leading-relaxed">
             Let's discuss how we can transform your hospitality business with innovative technology solutions like we did for {project.client}.
           </p>
           <button
-            className="px-8 py-4 md:px-10 md:py-5 rounded-lg font-medium text-base md:text-lg transition-all duration-200 hover:opacity-90"
+            className="px-8 py-3 md:px-10 md:py-4 rounded-lg font-medium text-base md:text-lg transition-all duration-200 hover:opacity-90"
             style={{ 
               backgroundColor: '#FFFFFF',
               color: '#1A2B5B'
