@@ -1,6 +1,6 @@
 function About() {
   return (
-    <section id="about" className="py-16 md:py-24 bg-[#FAFAFA]">
+    <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-teal-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Top Section: About Inhabit Tech */}
         <div className="text-center mb-8 md:mb-12">

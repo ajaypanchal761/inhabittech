@@ -1,6 +1,6 @@
 function ReadyToStart() {
   return (
-    <section className="pt-4 md:pt-6 pb-8 md:pb-10 bg-white">
+    <section className="pt-4 md:pt-6 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div 
           className="rounded-3xl p-6 md:p-8 lg:p-10 text-center shadow-lg"

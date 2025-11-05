@@ -125,7 +125,7 @@ function Projects() {
   ]
 
   return (
-    <section id="projects" className="pt-16 md:pt-24 pb-8 md:pb-10 bg-white">
+    <section id="projects" className="pt-16 md:pt-24 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4" style={{ color: '#2A7F7F' }}>
