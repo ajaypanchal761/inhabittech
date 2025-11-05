@@ -41,7 +41,7 @@ function Projects() {
     <section id="projects" className="pt-16 md:pt-24 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4" style={{ color: '#2A7F7F' }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-4" style={{ color: '#2A7F7F' }}>
           Our Projects
         </h2>
         
@@ -63,7 +63,7 @@ function Projects() {
         {/* Projects Grid */}
         {projects.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-text-gray text-lg">No projects found</p>
+            <p className="text-gray-600 text-lg">No projects found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -92,15 +92,14 @@ function Projects() {
                     )}
                     {/* Completed Badge */}
                     <div 
-                      className="absolute top-3 right-3 px-3 py-1 rounded-lg text-white text-xs font-medium"
-                      style={{ backgroundColor: '#4ECDC4' }}
+                      className="absolute top-3 right-3 px-3 py-1 rounded-lg bg-green-500 text-white text-xs font-medium"
                     >
-                      {project.status === 'completed' ? 'Completed' : project.status}
+                      {project.status === 'completed' ? 'Completed' : project.status || 'Completed'}
                     </div>
                   </div>
                   
                   {/* Card Content */}
-                  <div className="p-4 md:p-5 flex-grow flex flex-col">
+                  <div className="p-4 md:p-5 grow flex flex-col">
                     {/* Project Title */}
                     <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
                       {project.title}
@@ -112,7 +111,7 @@ function Projects() {
                     </p>
                     
                     {/* Category */}
-                    <p className="text-sm md:text-base text-gray-600 mb-4 flex-grow">
+                    <p className="text-sm md:text-base text-gray-600 mb-4 grow">
                       {project.category}
                     </p>
                     

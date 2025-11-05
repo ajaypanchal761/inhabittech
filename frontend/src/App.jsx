@@ -2,6 +2,9 @@ import './App.css'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './components/Home'
 import ProjectDetail from './components/ProjectDetail'
+import AboutUs from './components/AboutUs'
+import Services from './components/Services'
+import ContactUs from './components/ContactUs'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AdminProjects from './components/admin/AdminProjects'
@@ -16,6 +19,10 @@ function App() {
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/project/:id" element={<ProjectDetail />} />
+      <Route path="/about" element={<AboutUs />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/contact" element={<ContactUs />} />
+
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLogin />} />
@@ -70,6 +77,7 @@ function App() {
 
       {/* Redirect unknown routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
+
     </Routes>
   )
 }

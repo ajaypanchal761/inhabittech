@@ -77,7 +77,7 @@ function OurImpact() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Heading */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4 md:mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-4 md:mb-6">
           <span style={{ color: '#4ECDC4' }}>Our</span>{' '}
           <span style={{ color: '#FF8C00' }}>Impact</span>
         </h2>
@@ -98,7 +98,7 @@ function OurImpact() {
             }}
           >
             <div 
-              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-3 md:mb-4"
+                      className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 md:mb-4"
               style={{ color: '#4ECDC4' }}
             >
               <CountUp end={50} suffix="+" duration={2000} />
@@ -117,7 +117,7 @@ function OurImpact() {
             }}
           >
             <div 
-              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-3 md:mb-4"
+                      className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 md:mb-4"
               style={{ color: '#4ECDC4' }}
             >
               <CountUp end={15} suffix="+" duration={2000} />
@@ -136,7 +136,7 @@ function OurImpact() {
             }}
           >
             <div 
-              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-3 md:mb-4"
+                      className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 md:mb-4"
               style={{ color: '#4ECDC4' }}
             >
               <CountUp end={100} suffix="%" duration={2000} />

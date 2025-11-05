@@ -15,7 +15,7 @@ function TrustedPartners() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Main Heading */}
         <h2 
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 md:mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-4 md:mb-6"
           style={{ color: '#2C3E50' }}
         >
           Trusted by Leading Hotel Brands

@@ -1,6 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+
+import Header from './Header'
+import image1 from '../assets/images (1).jpeg'
+import image2 from '../assets/images (2).jpeg'
+import image3 from '../assets/images (3).jpeg'
+import image4 from '../assets/images (4).jpeg'
+import image5 from '../assets/images (5).jpeg'
+import image6 from '../assets/images (6).jpeg'
+import images from '../assets/images.jpeg'
+import download from '../assets/download.jpeg'
+
 import { projectAPI } from '../services/api'
+
 
 function ProjectDetail() {
   const { id } = useParams()
@@ -101,8 +113,9 @@ function ProjectDetail() {
       className="min-h-screen"
       style={{ backgroundColor: '#1A2B5B' }}
     >
+      <Header />
       {/* Top Navigation */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 pb-12 md:pb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-12 md:pb-16">
         <button
           onClick={() => navigate('/')}
           className="flex items-center gap-2 text-white hover:opacity-70 transition-opacity mb-6 md:mb-8"
@@ -116,7 +129,7 @@ function ProjectDetail() {
         {/* Project Header */}
         <div className="mb-8 md:mb-12">
           <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 flex-wrap">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white">
               {project.title}
             </h1>
             <div 
@@ -236,7 +249,7 @@ function ProjectDetail() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
           {/* Column 1: Technologies Implemented */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6">
+            <h2 className="text-xl md:text-2xl font-extrabold text-white mb-4 md:mb-6">
               Technologies Implemented
             </h2>
             <div className="space-y-3 md:space-y-4">
@@ -264,7 +277,7 @@ function ProjectDetail() {
 
           {/* Column 2: Project Information */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6">
+            <h2 className="text-xl md:text-2xl font-extrabold text-white mb-4 md:mb-6">
               Project Information
             </h2>
             <div className="space-y-3 md:space-y-4">
@@ -303,7 +316,7 @@ function ProjectDetail() {
 
           {/* Column 3: Challenges & Solutions */}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6">
+            <h2 className="text-xl md:text-2xl font-extrabold text-white mb-4 md:mb-6">
               Challenges & Solutions
             </h2>
             <div className="space-y-4 md:space-y-6">
@@ -316,7 +329,7 @@ function ProjectDetail() {
                 }}
               >
                 <h3 
-                  className="text-lg md:text-xl font-bold mb-3 md:mb-4"
+                  className="text-lg md:text-xl font-extrabold mb-3 md:mb-4"
                   style={{ color: '#FF6B6B' }}
                 >
                   Key Challenges
@@ -347,7 +360,7 @@ function ProjectDetail() {
                 }}
               >
                 <h3 
-                  className="text-lg md:text-xl font-bold mb-3 md:mb-4"
+                  className="text-lg md:text-xl font-extrabold mb-3 md:mb-4"
                   style={{ color: '#4ECDC4' }}
                 >
                   Our Solutions
@@ -377,7 +390,7 @@ function ProjectDetail() {
           className="rounded-xl p-6 md:p-8 text-center pb-8 md:pb-10 mb-12 md:mb-16"
           style={{ backgroundColor: '#1e40af' }}
         >
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-3 md:mb-4">
             Interested in Similar Solutions?
           </h2>
           <p className="text-white text-base md:text-lg mb-4 md:mb-6 max-w-3xl mx-auto leading-relaxed">
