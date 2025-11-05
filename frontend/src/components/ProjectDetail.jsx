@@ -1,81 +1,99 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import image1 from '../assets/images (1).jpeg'
-import image2 from '../assets/images (2).jpeg'
-import image3 from '../assets/images (3).jpeg'
-import image4 from '../assets/images (4).jpeg'
-import image5 from '../assets/images (5).jpeg'
-import image6 from '../assets/images (6).jpeg'
-import images from '../assets/images.jpeg'
-import download from '../assets/download.jpeg'
+import { projectAPI } from '../services/api'
 
 function ProjectDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [project, setProject] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  // All available images
-  const allImages = [image1, image2, image3, image4, image5, image6, images, download]
+  // Carousel images - use project images or placeholder
+  const carouselImages = project?.images && project.images.length > 0 
+    ? project.images.map(img => img.url)
+    : []
 
-  // Project data
-  const projects = {
-    1: {
-      title: 'One Berkeley Street - Café',
-      client: 'Crosstree Real Estate Partners LLP',
-      category: 'Hospitality Technology',
-      solutionType: 'Boutique Hotel Automation | Guest Experience Platform',
-      description: 'Revolutionary smart hotel implementation for One Berkeley Street featuring AI-powered guest services, automated room controls, and personalized experience platform that sets new standards for boutique hospitality.',
-      technologies: ['AI Guest Services', 'Smart Room Controls', 'Digital Concierge', 'Automated Check-in', 'Personalization Engine'],
-      location: 'London, UK',
-      completionYear: '2024',
-      projectType: 'Hospitality Technology',
-      status: 'Live & Operational',
-      challenges: ['Manual guest services', 'Inconsistent room experiences', 'Limited personalization', 'Operational inefficiencies'],
-      solutions: ['AI-powered concierge system', 'Automated room environment controls', 'Personalized guest profiles', 'Streamlined operations platform']
-    },
-    2: {
-      title: 'Broadwick Soho',
-      client: 'Broadwick Street Holdings Limited',
-      category: 'Smart Hotel Solutions',
-      solutionType: 'Boutique Hotel Automation | Guest Experience Platform',
-      description: 'Revolutionary smart hotel implementation for Broadwick Soho featuring AI-powered guest services, automated room controls, and personalized experience platform that sets new standards for boutique hospitality.',
-      technologies: ['AI Guest Services', 'Smart Room Controls', 'Digital Concierge', 'Automated Check-in', 'Personalization Engine'],
-      location: 'London, UK',
-      completionYear: '2024',
-      projectType: 'Smart Hotel Solutions',
-      status: 'Live & Operational',
-      challenges: ['Manual guest services', 'Inconsistent room experiences', 'Limited personalization', 'Operational inefficiencies'],
-      solutions: ['AI-powered concierge system', 'Automated room environment controls', 'Personalized guest profiles', 'Streamlined operations platform']
-    },
-    // Add more projects as needed
-  }
-
-  const project = projects[id] || projects[2] // Default to project 2 if not found
-
-  // Carousel images - use 4 images from allImages
-  const carouselImages = allImages.slice(0, 4)
-
+  // Fetch project data
   useEffect(() => {
-    let interval = null
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length)
-      }, 3000)
+    const fetchProject = async () => {
+      try {
+        const response = await projectAPI.getProjectById(id)
+        if (response.data && response.data.project) {
+          setProject(response.data.project)
+        }
+      } catch (error) {
+        console.error('Error fetching project:', error)
+        navigate('/')
+      } finally {
+        setLoading(false)
+      }
     }
+    fetchProject()
+  }, [id, navigate])
+
+  // Carousel auto-play effect
+  useEffect(() => {
+    if (!isPlaying || carouselImages.length === 0) return
+    
+    let interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length)
+    }, 3000)
+    
     return () => clearInterval(interval)
   }, [isPlaying, carouselImages.length])
 
+  // Reset image index when project changes
+  useEffect(() => {
+    setCurrentImageIndex(0)
+    setIsPlaying(false)
+  }, [id])
+
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length)
+    if (carouselImages.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length)
+    }
   }
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)
+    if (carouselImages.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)
+    }
   }
 
   const goToImage = (index) => {
-    setCurrentImageIndex(index)
+    if (carouselImages.length > 0 && index >= 0 && index < carouselImages.length) {
+      setCurrentImageIndex(index)
+    }
+  }
+
+  // Early returns after all hooks
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg-light flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
+          <p className="text-text-gray">Loading project...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-bg-light flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-text-gray text-lg mb-4">Project not found</p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -120,9 +138,11 @@ function ProjectDetail() {
           >
             {project.category}
           </p>
-          <p className="text-white text-base md:text-lg mb-4 md:mb-6">
-            {project.solutionType}
-          </p>
+          {project.solutionType && (
+            <p className="text-white text-base md:text-lg mb-4 md:mb-6">
+              {project.solutionType}
+            </p>
+          )}
           <p className="text-white text-base md:text-lg max-w-4xl leading-relaxed">
             {project.description}
           </p>
@@ -132,11 +152,17 @@ function ProjectDetail() {
         <div className="mb-12 md:mb-16">
           {/* Main Image */}
           <div className="relative mb-4 md:mb-6 rounded-xl overflow-hidden">
-            <img
-              src={carouselImages[currentImageIndex]}
-              alt={`${project.title} - Image ${currentImageIndex + 1}`}
-              className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
-            />
+            {carouselImages.length > 0 ? (
+              <img
+                src={carouselImages[currentImageIndex]}
+                alt={`${project.title} - Image ${currentImageIndex + 1}`}
+                className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+              />
+            ) : (
+              <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] bg-gray-200 flex items-center justify-center">
+                <p className="text-gray-400">No images available</p>
+              </div>
+            )}
             
             {/* Navigation Controls */}
             <button
@@ -158,12 +184,14 @@ function ProjectDetail() {
             </button>
 
             {/* Image Counter */}
-            <div 
-              className="absolute top-4 right-4 px-3 py-2 rounded-lg text-white text-sm md:text-base font-medium"
-              style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
-            >
-              {currentImageIndex + 1}/{carouselImages.length}
-            </div>
+            {carouselImages.length > 0 && (
+              <div 
+                className="absolute top-4 right-4 px-3 py-2 rounded-lg text-white text-sm md:text-base font-medium"
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+              >
+                {currentImageIndex + 1}/{carouselImages.length}
+              </div>
+            )}
 
             {/* Play/Pause Button */}
             <button
@@ -183,23 +211,25 @@ function ProjectDetail() {
           </div>
 
           {/* Thumbnails */}
-          <div className="flex justify-center gap-2 md:gap-3">
-            {carouselImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => goToImage(index)}
-                className={`relative rounded-lg overflow-hidden flex-shrink-0 ${
-                  index === currentImageIndex ? 'ring-2 ring-[#4ECDC4]' : 'opacity-70 hover:opacity-100'
-                } transition-all`}
-              >
-                <img
-                  src={image}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover"
-                />
-              </button>
-            ))}
-          </div>
+          {carouselImages.length > 0 && (
+            <div className="flex justify-center gap-2 md:gap-3">
+              {carouselImages.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToImage(index)}
+                  className={`relative rounded-lg overflow-hidden flex-shrink-0 ${
+                    index === currentImageIndex ? 'ring-2 ring-[#4ECDC4]' : 'opacity-70 hover:opacity-100'
+                  } transition-all`}
+                >
+                  <img
+                    src={image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Project Details Sections - Three Columns */}
@@ -210,7 +240,8 @@ function ProjectDetail() {
               Technologies Implemented
             </h2>
             <div className="space-y-3 md:space-y-4">
-              {project.technologies.map((tech, index) => (
+              {project.technologies && project.technologies.length > 0 ? (
+                project.technologies.map((tech, index) => (
                 <div
                   key={index}
                   className="rounded-lg p-4 md:p-5"
@@ -224,7 +255,10 @@ function ProjectDetail() {
                     <span className="text-white text-sm md:text-base">{tech}</span>
                   </div>
                 </div>
-              ))}
+              ))
+              ) : (
+                <p className="text-white text-sm">No technologies listed</p>
+              )}
             </div>
           </div>
 
@@ -238,8 +272,8 @@ function ProjectDetail() {
                 { label: 'Location', value: project.location },
                 { label: 'Completion Year', value: project.completionYear },
                 { label: 'Project Type', value: project.projectType },
-                { label: 'Project Status', value: project.status, isStatus: true }
-              ].map((info, index) => (
+                { label: 'Project Status', value: project.status === 'completed' ? 'Live & Operational' : project.status, isStatus: true }
+              ].filter(info => info.value).map((info, index) => (
                 <div
                   key={index}
                   className="rounded-lg p-4 md:p-5"
@@ -288,15 +322,19 @@ function ProjectDetail() {
                   Key Challenges
                 </h3>
                 <ul className="space-y-2 md:space-y-3">
-                  {project.challenges.map((challenge, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                        style={{ backgroundColor: '#E74C3C' }}
-                      />
-                      <span className="text-white text-sm md:text-base">{challenge}</span>
-                    </li>
-                  ))}
+                  {project.challenges && project.challenges.length > 0 ? (
+                    project.challenges.map((challenge, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <div 
+                          className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                          style={{ backgroundColor: '#E74C3C' }}
+                        />
+                        <span className="text-white text-sm md:text-base">{challenge}</span>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-white text-sm">No challenges listed</li>
+                  )}
                 </ul>
               </div>
 
@@ -315,15 +353,19 @@ function ProjectDetail() {
                   Our Solutions
                 </h3>
                 <ul className="space-y-2 md:space-y-3">
-                  {project.solutions.map((solution, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                        style={{ backgroundColor: '#4ECDC4' }}
-                      />
-                      <span className="text-white text-sm md:text-base">{solution}</span>
-                    </li>
-                  ))}
+                  {project.solutions && project.solutions.length > 0 ? (
+                    project.solutions.map((solution, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <div 
+                          className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                          style={{ backgroundColor: '#4ECDC4' }}
+                        />
+                        <span className="text-white text-sm md:text-base">{solution}</span>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-white text-sm">No solutions listed</li>
+                  )}
                 </ul>
               </div>
             </div>

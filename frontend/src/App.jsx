@@ -4,6 +4,10 @@ import Home from './components/Home'
 import ProjectDetail from './components/ProjectDetail'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
+import AdminProjects from './components/admin/AdminProjects'
+import AdminManageAdmins from './components/admin/AdminManageAdmins'
+import AdminSettings from './components/admin/AdminSettings'
+import ProjectForm from './components/admin/ProjectForm'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 
 function App() {
@@ -12,7 +16,7 @@ function App() {
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/project/:id" element={<ProjectDetail />} />
-      
+
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLogin />} />
       <Route
@@ -23,7 +27,47 @@ function App() {
           </ProtectedRoute>
         }
       />
-      
+      <Route
+        path="/admin/projects"
+        element={
+          <ProtectedRoute>
+            <AdminProjects />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/projects/create"
+        element={
+          <ProtectedRoute>
+            <ProjectForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/projects/edit/:id"
+        element={
+          <ProtectedRoute>
+            <ProjectForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/admins"
+        element={
+          <ProtectedRoute>
+            <AdminManageAdmins />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/settings"
+        element={
+          <ProtectedRoute>
+            <AdminSettings />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Redirect unknown routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

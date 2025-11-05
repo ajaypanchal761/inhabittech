@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdmin } from '../../context/AdminContext';
+import logo from '../../assets/logo.png';
 
 function AdminSidebar({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -15,6 +16,15 @@ function AdminSidebar({ isOpen, onClose }) {
         </svg>
       ),
       path: '/admin/dashboard',
+    },
+    {
+      name: 'Projects',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      ),
+      path: '/admin/projects',
     },
     {
       name: 'Manage Admins',
@@ -34,15 +44,6 @@ function AdminSidebar({ isOpen, onClose }) {
         </svg>
       ),
       path: '/admin/settings',
-    },
-    {
-      name: 'Reports',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      ),
-      path: '/admin/reports',
     },
   ];
 
@@ -73,9 +74,16 @@ function AdminSidebar({ isOpen, onClose }) {
       >
         {/* Sidebar Header */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-border-light">
-          <div>
-            <h2 className="text-xl font-bold text-primary">InHabitTech</h2>
-            <p className="text-xs text-text-gray">Admin Panel</p>
+          <div className="flex items-center gap-3">
+            <img 
+              src={logo} 
+              alt="InHabitTech Logo" 
+              className="h-10 w-auto"
+            />
+            <div>
+              <h2 className="text-lg font-bold text-primary">InHabitTech</h2>
+              <p className="text-xs text-text-gray">Admin Panel</p>
+            </div>
           </div>
           {/* Close button for mobile */}
           <button
