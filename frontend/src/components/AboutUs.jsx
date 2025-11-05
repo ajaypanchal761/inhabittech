@@ -167,7 +167,7 @@ function AboutUs() {
             <div className="text-center">
               <div 
                 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-2"
-                style={{ color: '#1A2B5B' }}
+                style={{ color: '#3B82F6' }}
               >
                 500+
               </div>
@@ -181,7 +181,7 @@ function AboutUs() {
             <div className="text-center">
               <div 
                 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-2"
-                style={{ color: '#1A2B5B' }}
+                style={{ color: '#3B82F6' }}
               >
                 50+
               </div>
@@ -195,7 +195,7 @@ function AboutUs() {
             <div className="text-center">
               <div 
                 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-2"
-                style={{ color: '#1A2B5B' }}
+                style={{ color: '#3B82F6' }}
               >
                 99.9%
               </div>
