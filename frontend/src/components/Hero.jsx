@@ -1,4 +1,29 @@
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+
 function Hero() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleProjectsClick = (e) => {
+    e.preventDefault()
+    // If on homepage, scroll to projects section
+    if (location.pathname === '/') {
+      const projectsSection = document.getElementById('projects')
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    } else {
+      // If on another page, navigate to homepage first, then scroll
+      navigate('/')
+      setTimeout(() => {
+        const projectsSection = document.getElementById('projects')
+        if (projectsSection) {
+          projectsSection.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    }
+  }
+
   return (
     <section className="relative min-h-screen md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center overflow-hidden pt-20 md:pt-0 pb-8 md:pb-0 w-full max-w-full">
       {/* Background Image with Dark Teal Overlay and Gradient */}
@@ -59,8 +84,8 @@ function Hero() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
           {/* Left Button - Orange with Arrow */}
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="group text-white px-4 md:px-6 lg:px-8 py-3 md:py-4 rounded-lg font-medium text-sm md:text-base lg:text-lg transition-all duration-200 flex items-center gap-2 hover:opacity-90"
             style={{ 
               background: 'linear-gradient(to right, #f97316, #ea580c)'
@@ -75,11 +100,12 @@ function Hero() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </a>
+          </Link>
 
           {/* Right Button - Same CSS as bg.txt */}
           <a
-            href="#services"
+            href="#projects"
+            onClick={handleProjectsClick}
             className="group px-4 md:px-6 lg:px-8 py-3 md:py-4 border-2 font-semibold rounded-lg transition-all duration-300 cursor-pointer hover:scale-105 text-sm md:text-base lg:text-lg"
             style={{ 
               borderColor: '#4ECDC4',

@@ -9,6 +9,7 @@ function AboutUs() {
   const [milestones, setMilestones] = useState([])
   const [teamLoading, setTeamLoading] = useState(true)
   const [milestonesLoading, setMilestonesLoading] = useState(true)
+  const [expandedCards, setExpandedCards] = useState({})
 
   useEffect(() => {
     fetchTeamMembers()
@@ -353,12 +354,30 @@ function AboutUs() {
                     >
                       {member.role}
                     </p>
-                    <p 
-                      className="text-sm md:text-base leading-relaxed"
-                      style={{ color: '#6B6B6B' }}
-                    >
-                      {member.description}
-                    </p>
+                    <div>
+                      <p 
+                        className={`text-sm md:text-base leading-relaxed mb-2 ${
+                          !expandedCards[member._id] ? 'line-clamp-3' : ''
+                        }`}
+                        style={{ color: '#6B6B6B' }}
+                      >
+                        {member.description}
+                      </p>
+                      {member.description && member.description.length > 150 && (
+                        <button
+                          onClick={() => {
+                            setExpandedCards(prev => ({
+                              ...prev,
+                              [member._id]: !prev[member._id]
+                            }))
+                          }}
+                          className="text-sm md:text-base font-medium cursor-pointer hover:opacity-80 transition-opacity"
+                          style={{ color: '#4ECDC4' }}
+                        >
+                          {expandedCards[member._id] ? 'Read Less' : 'Read More...'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
