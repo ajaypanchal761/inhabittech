@@ -40,13 +40,13 @@ function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
       <nav className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-16 md:h-20 relative">
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-20 md:h-24 lg:h-28 relative">
           {/* Logo - Image from assets folder - Left side */}
-          <Link to="/" className="flex items-center flex-shrink-0 max-w-[200px] md:max-w-[250px] lg:max-w-none">
+          <Link to="/" className="flex items-center flex-shrink-0 max-w-[250px] md:max-w-[300px] lg:max-w-[350px] xl:max-w-none">
             <img 
               src={logo} 
               alt="Inhabit Tech Logo" 
-              className="h-24 md:h-32 lg:h-36 xl:h-40 w-auto max-w-full"
+              className="h-32 md:h-44 lg:h-52 xl:h-56 w-auto max-w-full"
               style={{ 
                 transform: 'translateY(4px)',
                 opacity: 1

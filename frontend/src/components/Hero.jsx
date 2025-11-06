@@ -12,9 +12,9 @@ function Hero() {
         ></div>
         {/* Dark Teal Overlay with Gradient */}
         <div 
-          className="absolute inset-0 bg-gradient-to-br"
+          className="absolute inset-0 bg-gradient-to-br "
           style={{ 
-            backgroundImage: 'linear-gradient(to bottom right, rgba(13, 74, 58, 0.75), rgba(13, 74, 58, 0.85))'
+            backgroundImage: 'linear-gradient(to bottom right, rgba(13, 74, 58, 0.75), rgba(0, 10, 40, 0.95))'
           }}
         ></div>
       </div>

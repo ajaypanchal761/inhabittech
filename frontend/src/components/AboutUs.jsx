@@ -406,28 +406,32 @@ function AboutUs() {
                 {milestones.map((item, index) => (
                   <div 
                     key={item._id || index}
-                    className={`flex flex-col md:flex-row items-center gap-6 md:gap-8 ${
-                      item.position === 'left' ? 'md:flex-row-reverse' : ''
-                    }`}
+                    className="relative flex flex-col md:flex-row items-center gap-6 md:gap-8"
                   >
-                    {/* Year Circle */}
-                    <div className="flex-shrink-0 w-full md:w-1/2 flex justify-center md:justify-end">
-                      <div className="flex items-center gap-4 md:gap-6">
-                        <div 
-                          className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-bold text-lg md:text-xl text-white shadow-lg"
-                          style={{ backgroundColor: '#4ECDC4' }}
-                        >
-                          {item.year}
-                        </div>
-                        <div 
-                          className="w-3 h-3 rounded-full hidden md:block"
-                          style={{ backgroundColor: '#4ECDC4' }}
-                        />
+                    {/* Dot on Timeline Line */}
+                    <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-10">
+                      <div 
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: '#4ECDC4' }}
+                      />
+                    </div>
+
+                    {/* Year Circle - Opposite Side of Content */}
+                    <div className={`flex-shrink-0 w-full md:w-auto flex justify-center md:absolute z-10 ${
+                      item.position === 'left' 
+                        ? 'md:left-1/2 md:transform md:translate-x-8' 
+                        : 'md:left-1/2 md:transform md:-translate-x-[calc(100%+2rem)]'
+                    }`}>
+                      <div 
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-bold text-lg md:text-xl text-white shadow-lg"
+                        style={{ backgroundColor: '#4ECDC4' }}
+                      >
+                        {item.year}
                       </div>
                     </div>
 
-                    {/* Content Card */}
-                    <div className="w-full md:w-1/2">
+                    {/* Content Card - Alternating Left/Right */}
+                    <div className={`w-full md:w-1/2 ${item.position === 'left' ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left md:ml-auto'}`}>
                       <div 
                         className="p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm bg-white"
                       >
@@ -466,7 +470,8 @@ function AboutUs() {
             Let's discuss how we can help transform your hotel's technology infrastructure
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
-            <button 
+            <Link 
+              to="/contact"
               className="px-8 py-4 md:px-10 md:py-5 rounded-lg font-medium text-base md:text-lg transition-all duration-200 hover:opacity-90"
               style={{ 
                 backgroundColor: '#F1C40F',
@@ -474,8 +479,9 @@ function AboutUs() {
               }}
             >
               Get in Touch
-            </button>
-            <button 
+            </Link>
+            <Link 
+              to="/services"
               className="px-8 py-4 md:px-10 md:py-5 rounded-lg font-medium text-base md:text-lg transition-all duration-200 hover:opacity-90 border-2"
               style={{ 
                 backgroundColor: '#FFFFFF',
@@ -484,7 +490,7 @@ function AboutUs() {
               }}
             >
               View Our Services
-            </button>
+            </Link>
           </div>
         </div>
       </section>
