@@ -78,7 +78,7 @@ export const createService = async (req, res, next) => {
             folder: 'inhabittech/icons',
             resource_type: 'image',
             allowed_formats: ['png'],
-            transformation: [{ width: 200, height: 200, crop: 'fill', format: 'png' }],
+            transformation: [{ width: 200, height: 200, crop: 'fit', format: 'png' }],
           };
 
           const result = await new Promise((resolve, reject) => {
@@ -278,7 +278,7 @@ export const updateService = async (req, res, next) => {
             folder: 'inhabittech/icons',
             resource_type: 'image',
             allowed_formats: ['png'],
-            transformation: [{ width: 200, height: 200, crop: 'fill', format: 'png' }],
+            transformation: [{ width: 200, height: 200, crop: 'fit', format: 'png' }],
           };
 
           const result = await new Promise((resolve, reject) => {
