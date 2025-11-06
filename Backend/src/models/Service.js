@@ -21,6 +21,16 @@ const serviceSchema = new mongoose.Schema({
       trim: true,
     },
   },
+  image: {
+    url: {
+      type: String,
+      trim: true,
+    },
+    publicId: {
+      type: String,
+      trim: true,
+    },
+  },
   keyFeatures: [{
     type: String,
     trim: true,

@@ -8,7 +8,7 @@ const getToken = () => {
 // Make API request
 const apiRequest = async (endpoint, options = {}) => {
   const token = getToken();
-  
+
   // Merge headers properly - ensure Authorization and Content-Type are set correctly
   const headers = {
     'Content-Type': 'application/json',
@@ -96,12 +96,12 @@ export const projectAPI = {
   getAllProjects: async (isActive = null) => {
     const token = getToken();
     let url = `${API_BASE_URL}/projects`;
-    
+
     // Only add isActive query param if it's explicitly provided
     if (isActive !== null && isActive !== undefined) {
       url += `?isActive=${isActive}`;
     }
-    
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export const projectAPI = {
   createProject: async (projectData, images) => {
     const token = getToken();
     const formData = new FormData();
-    
+
     // Append project data as JSON
     Object.keys(projectData).forEach(key => {
       if (key === 'technologies' || key === 'challenges' || key === 'solutions') {
@@ -139,7 +139,7 @@ export const projectAPI = {
         formData.append(key, projectData[key]);
       }
     });
-    
+
     // Append images
     if (images && images.length > 0) {
       images.forEach((image) => {
@@ -166,16 +166,16 @@ export const projectAPI = {
   updateProject: async (id, projectData, images) => {
     const token = getToken();
     const formData = new FormData();
-    
+
     // Append project data
     Object.keys(projectData).forEach(key => {
       const value = projectData[key];
-      
+
       // Skip undefined, null, or empty string values
       if (value === undefined || value === null || value === '') {
         return;
       }
-      
+
       // Handle arrays and objects that need JSON stringification
       if (key === 'technologies' || key === 'challenges' || key === 'solutions' || key === 'deleteImages') {
         // Only stringify if it's an array and has items
@@ -186,7 +186,7 @@ export const projectAPI = {
         formData.append(key, value);
       }
     });
-    
+
     // Append new images
     if (images && images.length > 0) {
       images.forEach((image) => {
@@ -223,12 +223,12 @@ export const teamAPI = {
   getAllTeamMembers: async (isActive = null) => {
     const token = getToken();
     let url = `${API_BASE_URL}/team`;
-    
+
     // Only add isActive query param if it's explicitly provided
     if (isActive !== null && isActive !== undefined) {
       url += `?isActive=${isActive}`;
     }
-    
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -257,12 +257,12 @@ export const teamAPI = {
   createTeamMember: async (teamData, image) => {
     const token = getToken();
     const formData = new FormData();
-    
+
     // Append team data
     Object.keys(teamData).forEach(key => {
       formData.append(key, teamData[key]);
     });
-    
+
     // Append image
     if (image) {
       formData.append('image', image);
@@ -287,7 +287,7 @@ export const teamAPI = {
   updateTeamMember: async (id, teamData, image) => {
     const token = getToken();
     const formData = new FormData();
-    
+
     // Append team data
     Object.keys(teamData).forEach(key => {
       const value = teamData[key];
@@ -296,7 +296,7 @@ export const teamAPI = {
         formData.append(key, value);
       }
     });
-    
+
     // Append new image if provided
     if (image) {
       formData.append('image', image);
@@ -331,12 +331,12 @@ export const milestoneAPI = {
   getAllMilestones: async (isActive = null) => {
     const token = getToken();
     let url = `${API_BASE_URL}/milestones`;
-    
+
     // Only add isActive query param if it's explicitly provided
     if (isActive !== null && isActive !== undefined) {
       url += `?isActive=${isActive}`;
     }
-    
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -391,12 +391,12 @@ export const serviceAPI = {
   getAllServices: async (isActive = null) => {
     const token = getToken();
     let url = `${API_BASE_URL}/services`;
-    
+
     // Only add isActive query param if it's explicitly provided
     if (isActive !== null && isActive !== undefined) {
       url += `?isActive=${isActive}`;
     }
-    
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -423,18 +423,48 @@ export const serviceAPI = {
 
   // Create service (protected)
   createService: async (serviceData) => {
-    return apiRequest('/services', {
+    const token = getToken();
+    const isFormData = serviceData instanceof FormData;
+
+    const config = {
       method: 'POST',
-      body: JSON.stringify(serviceData),
-    });
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+        // Don't set Content-Type for FormData - browser will set it with boundary
+        ...(!isFormData && { 'Content-Type': 'application/json' }),
+      },
+      body: isFormData ? serviceData : JSON.stringify(serviceData),
+    };
+
+    const response = await fetch(`${API_BASE_URL}/services`, config);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
   },
 
   // Update service (protected)
   updateService: async (id, serviceData) => {
-    return apiRequest(`/services/${id}`, {
+    const token = getToken();
+    const isFormData = serviceData instanceof FormData;
+
+    const config = {
       method: 'PUT',
-      body: JSON.stringify(serviceData),
-    });
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+        // Don't set Content-Type for FormData - browser will set it with boundary
+        ...(!isFormData && { 'Content-Type': 'application/json' }),
+      },
+      body: isFormData ? serviceData : JSON.stringify(serviceData),
+    };
+
+    const response = await fetch(`${API_BASE_URL}/services/${id}`, config);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
   },
 
   // Delete service (protected)

@@ -31,8 +31,15 @@ if (isCloudinaryConfigured()) {
           folder = 'inhabittech/icons';
           transformation = [{ width: 200, height: 200, crop: 'fill', format: 'png' }];
         } else if (file.fieldname === 'image') {
-          folder = 'inhabittech/team';
-          transformation = [{ width: 400, height: 400, crop: 'fill', gravity: 'face' }];
+          // Check if it's a service image or team image based on route
+          const isServiceImage = req.path?.includes('/services') || req.originalUrl?.includes('/services');
+          if (isServiceImage) {
+            folder = 'inhabittech/services';
+            transformation = [{ width: 1200, height: 800, crop: 'limit' }];
+          } else {
+            folder = 'inhabittech/team';
+            transformation = [{ width: 400, height: 400, crop: 'fill', gravity: 'face' }];
+          }
         }
 
         return {
