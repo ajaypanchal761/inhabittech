@@ -21,18 +21,21 @@ const apiRequest = async (endpoint, options = {}) => {
     headers: headers,
   };
 
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+
+  let data;
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Something went wrong');
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+    data = await response.json();
+  } catch {
+    // If response is not JSON, throw a more descriptive error
+    throw new Error('Invalid response format from server');
   }
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Something went wrong');
+  }
+
+  return data;
 };
 
 // Admin API methods

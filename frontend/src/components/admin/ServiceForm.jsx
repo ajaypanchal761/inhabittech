@@ -9,7 +9,7 @@ function ServiceForm() {
   const { id } = useParams();
   const isEditMode = !!id;
   const navigate = useNavigate();
-  const { admin, logout } = useAdmin();
+  const { logout } = useAdmin();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -49,6 +49,7 @@ function ServiceForm() {
     if (isEditMode) {
       fetchService();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchService = async () => {
