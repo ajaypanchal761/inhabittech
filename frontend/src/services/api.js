@@ -478,5 +478,69 @@ export const serviceAPI = {
   },
 };
 
+// Consultation API methods
+export const consultationAPI = {
+  // Get all consultations (protected - admin only)
+  getAllConsultations: async (status = null) => {
+    const token = getToken();
+    let url = `${API_BASE_URL}/consultations`;
+
+    if (status !== null && status !== undefined) {
+      url += `?status=${status}`;
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    };
+    const response = await fetch(url, config);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
+  },
+
+  // Get consultation by ID (protected - admin only)
+  getConsultationById: async (id) => {
+    return apiRequest(`/consultations/${id}`, {
+      method: 'GET',
+    });
+  },
+
+  // Create consultation (public)
+  createConsultation: async (consultationData) => {
+    const response = await fetch(`${API_BASE_URL}/consultations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(consultationData),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
+  },
+
+  // Update consultation (protected - admin only)
+  updateConsultation: async (id, consultationData) => {
+    return apiRequest(`/consultations/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(consultationData),
+    });
+  },
+
+  // Delete consultation (protected - admin only)
+  deleteConsultation: async (id) => {
+    return apiRequest(`/consultations/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
 export default apiRequest;
 

@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import heroImage from '../assets/images.jpeg'
+import { serviceAPI, consultationAPI } from '../services/api'
 
 function ContactUs() {
   const [formData, setFormData] = useState({
@@ -14,7 +15,25 @@ function ContactUs() {
     message: ''
   })
   const [charCount, setCharCount] = useState(0)
+  const [services, setServices] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const MAX_CHARS = 500
+
+  // Fetch active services for dropdown
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await serviceAPI.getAllServices(true) // Only active services
+        if (response.data && response.data.services) {
+          setServices(response.data.services)
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error)
+      }
+    }
+    fetchServices()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -28,9 +47,43 @@ function ContactUs() {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
+    setLoading(true)
+    
+    try {
+      const consultationData = {
+        fullName: formData.fullName,
+        email: formData.email,
+        company: formData.company || '',
+        phone: formData.phone || '',
+        consultationInterest: formData.interest || null,
+        message: formData.message
+      }
+
+      await consultationAPI.createConsultation(consultationData)
+      
+      // Reset form
+      setFormData({
+        fullName: '',
+        email: '',
+        company: '',
+        phone: '',
+        interest: '',
+        message: ''
+      })
+      setCharCount(0)
+      setSubmitted(true)
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 5000)
+    } catch (error) {
+      alert('Error submitting consultation request: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const faqs = [
@@ -228,11 +281,11 @@ function ContactUs() {
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2A7F7F] focus:border-[#2A7F7F] outline-none transition-all appearance-none bg-white pr-10"
                       >
                         <option value="">Select consultation area</option>
-                        <option value="hotel-systems">Hotel Systems Consultation</option>
-                        <option value="network">Network & Connectivity Advisory</option>
-                        <option value="cloud">Cloud Transition Management</option>
-                        <option value="ai">AI Integration Consulting</option>
-                        <option value="cybersecurity">Cybersecurity Advisory</option>
+                        {services.map((service) => (
+                          <option key={service._id} value={service._id}>
+                            {service.title}
+                          </option>
+                        ))}
                       </select>
                       {/* Dropdown Arrow */}
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -268,16 +321,26 @@ function ContactUs() {
                     </p>
                   </div>
 
+                  {/* Success Message */}
+                  {submitted && (
+                    <div className="p-4 rounded-lg bg-green-50 border border-green-200">
+                      <p className="text-green-800 text-sm md:text-base">
+                        Thank you! Your consultation request has been submitted successfully. We'll get back to you soon.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full px-6 py-4 rounded-lg font-medium text-base md:text-lg text-white transition-all duration-200 hover:opacity-90"
+                    disabled={loading}
+                    className="w-full px-6 py-4 rounded-lg font-medium text-base md:text-lg text-white transition-all duration-200 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ 
                       backgroundColor: '#2A7F7F',
                       color: '#FFFFFF'
                     }}
                   >
-                    Request Consultation
+                    {loading ? 'Submitting...' : 'Request Consultation'}
                   </button>
                 </form>
               </div>

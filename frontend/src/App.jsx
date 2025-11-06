@@ -11,6 +11,7 @@ import AdminProjects from './components/admin/AdminProjects'
 import AdminTeam from './components/admin/AdminTeam'
 import AdminMilestones from './components/admin/AdminMilestones'
 import AdminServices from './components/admin/AdminServices'
+import AdminConsultations from './components/admin/AdminConsultations'
 import AdminManageAdmins from './components/admin/AdminManageAdmins'
 import AdminSettings from './components/admin/AdminSettings'
 import ProjectForm from './components/admin/ProjectForm'
@@ -133,6 +134,14 @@ function App() {
         element={
           <ProtectedRoute>
             <ServiceForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/consultations"
+        element={
+          <ProtectedRoute>
+            <AdminConsultations />
           </ProtectedRoute>
         }
       />

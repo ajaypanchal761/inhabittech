@@ -4,6 +4,7 @@ import projectRoutes from './projectRoutes.js';
 import teamRoutes from './teamRoutes.js';
 import milestoneRoutes from './milestoneRoutes.js';
 import serviceRoutes from './serviceRoutes.js';
+import consultationRoutes from './consultationRoutes.js';
 
 const router = express.Router();
 
@@ -21,6 +22,9 @@ router.use('/milestones', milestoneRoutes);
 
 // Service routes
 router.use('/services', serviceRoutes);
+
+// Consultation routes
+router.use('/consultations', consultationRoutes);
 
 // Base route
 router.get('/', (req, res) => {
