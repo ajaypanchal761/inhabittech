@@ -113,10 +113,10 @@ function Services() {
       </div>
 
       {/* Hero Section */}
-      <section className="py-12 md:py-16 bg-white">
+      <section className="py-8 md:py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-6 md:mb-8"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-6 md:mb-8"
             style={{ color: '#2A7F7F' }}
           >
             Our Technology Services
@@ -165,7 +165,7 @@ function Services() {
 
       {/* Service Detail Section */}
       {currentService && (
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-8 md:py-12 lg:py-16 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-start">
               {/* Left Side - Visual Card */}
@@ -180,26 +180,12 @@ function Services() {
                 {currentService.image?.url ? (
                   <div className="absolute inset-0 bg-black/20 rounded-xl"></div>
                 ) : null}
-                <div className={`flex items-center gap-4 mb-4 ${currentService.image?.url ? 'relative z-10' : ''}`}>
-                  <div
-                    className="w-16 h-16 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: '#2A7F7F' }}
-                  >
-                    {renderLargeIcon(currentService)}
-                  </div>
-                  <h3
-                    className={`text-xl md:text-2xl font-extrabold ${currentService.image?.url ? 'text-white' : ''}`}
-                    style={currentService.image?.url ? {} : { color: '#2A7F7F' }}
-                  >
-                    {currentService.title}
-                  </h3>
-                </div>
               </div>
 
               {/* Right Side - Text Details */}
               <div>
                 <h2
-                  className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 md:mb-8"
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8"
                   style={{ color: '#1A1A1A' }}
                 >
                   {currentService.title}
@@ -215,7 +201,7 @@ function Services() {
                 {currentService.keyFeatures && currentService.keyFeatures.length > 0 && (
                   <div className="mb-6 md:mb-8">
                     <h3
-                      className="text-lg md:text-xl font-extrabold mb-4"
+                      className="text-lg md:text-xl font-bold mb-4"
                       style={{ color: '#1A1A1A' }}
                     >
                       Key Features
@@ -243,7 +229,7 @@ function Services() {
                 {currentService.technologies && currentService.technologies.length > 0 && (
                   <div className="mb-6 md:mb-8">
                     <h3
-                      className="text-lg md:text-xl font-extrabold mb-4"
+                      className="text-lg md:text-xl font-bold mb-4"
                       style={{ color: '#1A1A1A' }}
                     >
                       Technologies We Use
@@ -283,14 +269,14 @@ function Services() {
 
       {/* Key Benefits & Implementation Process Section - Side by Side */}
       {currentService && (
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-8 md:py-12 lg:py-16 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
               {/* Left Section - Key Benefits */}
               {currentService.benefits && currentService.benefits.length > 0 && (
                 <div>
                   <h2
-                    className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 md:mb-12"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12"
                     style={{ color: '#1A1A1A' }}
                   >
                     Key Benefits
@@ -299,17 +285,17 @@ function Services() {
                     {currentService.benefits.map((benefit, index) => (
                       <div
                         key={index}
-                        className="p-5 md:p-6 rounded-xl flex items-start gap-4 bg-green-100"
+                        className="p-4 md:p-5 rounded-xl flex items-start gap-3 bg-green-100"
                       >
                         <div
-                          className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-green-700"
+                          className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-green-700"
                         >
-                          <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
                         <p
-                          className="text-base md:text-lg pt-1"
+                          className="text-sm md:text-base pt-1"
                           style={{ color: '#1A1A1A' }}
                         >
                           {benefit}
@@ -324,7 +310,7 @@ function Services() {
               {currentService.implementationSteps && currentService.implementationSteps.length > 0 && (
                 <div>
                   <h2
-                    className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 md:mb-12"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 md:mb-12"
                     style={{ color: '#1A1A1A' }}
                   >
                     Implementation Process
@@ -333,20 +319,20 @@ function Services() {
                     {currentService.implementationSteps.map((step, index) => (
                       <div
                         key={index}
-                        className="p-5 md:p-6 rounded-xl flex items-start gap-4"
+                        className="p-4 md:p-5 rounded-xl flex items-start gap-3"
                         style={{
                           backgroundColor: '#F0FDFA',
                           border: '1px solid #E0F7F5'
                         }}
                       >
                         <div
-                          className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-lg md:text-xl text-white"
+                          className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm md:text-base text-white"
                           style={{ backgroundColor: '#4ECDC4' }}
                         >
                           {step.number}
                         </div>
                         <p
-                          className="text-base md:text-lg font-medium pt-1"
+                          className="text-sm md:text-base font-medium pt-1"
                           style={{ color: '#1A1A1A' }}
                         >
                           {step.title}
@@ -363,7 +349,7 @@ function Services() {
 
       {/* Success Story Section */}
       {currentService && currentService.successStory && (currentService.successStory.client || currentService.successStory.challenge || currentService.successStory.solution || currentService.successStory.results) && (
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-8 md:py-12 lg:py-16 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             {/* White Card with Light Green Tint Background */}
             <div
@@ -374,7 +360,7 @@ function Services() {
               }}
             >
               <h2
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-12 md:mb-16 text-center"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12 md:mb-16 text-center"
                 style={{ color: '#1A1A1A' }}
               >
                 Success Story
@@ -394,7 +380,7 @@ function Services() {
                       </svg>
                     </div>
                     <p
-                      className="text-base md:text-lg font-extrabold mb-2"
+                      className="text-base md:text-lg font-bold mb-2"
                       style={{ color: '#1A1A1A' }}
                     >
                       Client
@@ -420,7 +406,7 @@ function Services() {
                       </svg>
                     </div>
                     <p
-                      className="text-base md:text-lg font-extrabold mb-2"
+                      className="text-base md:text-lg font-bold mb-2"
                       style={{ color: '#1A1A1A' }}
                     >
                       Challenge
@@ -446,7 +432,7 @@ function Services() {
                       </svg>
                     </div>
                     <p
-                      className="text-base md:text-lg font-extrabold mb-2"
+                      className="text-base md:text-lg font-bold mb-2"
                       style={{ color: '#1A1A1A' }}
                     >
                       Solution
@@ -484,13 +470,13 @@ function Services() {
 
       {/* Call to Action Section */}
       <section
-        className="py-16 md:py-24"
+        className="py-8 md:py-12 lg:py-16"
         style={{
           background: 'linear-gradient(180deg, #2A7F7F 0%, #1A5F5F 100%)'
         }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
             Ready to Get Started?
           </h2>
           <p className="text-base md:text-lg text-white mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed">

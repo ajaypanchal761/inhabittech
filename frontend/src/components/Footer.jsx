@@ -13,7 +13,7 @@ function Footer() {
               <img 
                 src={logo} 
                 alt="Inhabit Tech Logo" 
-                className="h-16 md:h-20 lg:h-24 w-auto mb-2"
+                className="h-24 md:h-28 lg:h-32 xl:h-36 w-auto mb-2"
                 style={{ opacity: 1 }}
               />
             </div>
