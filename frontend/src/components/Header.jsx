@@ -38,7 +38,7 @@ function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
+    <header className="fixed top-0 left-0 right-0 z-50 shadow-lg" style={{ backgroundColor: '#0D4A3A' }}>
       <nav className="w-full px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-20 md:h-24 lg:h-28 relative">
           {/* Logo - Image from assets folder - Left side */}
@@ -62,7 +62,7 @@ function Header() {
           <div className="hidden md:flex items-center space-x-8 lg:space-x-12 absolute left-1/2 transform -translate-x-1/2">
             <Link 
               to="/" 
-              className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
+              className="text-white hover:text-[#4ECDC4] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
             >
               Home
             </Link>
@@ -70,8 +70,8 @@ function Header() {
               to="/about" 
               className={`transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap px-3 py-1 rounded ${
                 isAboutPage 
-                  ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
-                  : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+                  ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
+                  : 'text-white hover:text-[#4ECDC4]'
               }`}
             >
               About
@@ -80,8 +80,8 @@ function Header() {
               to="/services" 
               className={`transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap px-3 py-1 rounded ${
                 isServicesPage 
-                  ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
-                  : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+                  ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
+                  : 'text-white hover:text-[#4ECDC4]'
               }`}
             >
               Services
@@ -89,7 +89,7 @@ function Header() {
             <a 
               href="#projects" 
               onClick={handleProjectsClick}
-              className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
+              className="text-white hover:text-[#4ECDC4] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
             >
               Projects
             </a>
@@ -98,7 +98,7 @@ function Header() {
               to="/contact"
               className={`px-5 lg:px-6 py-2.5 lg:py-3 rounded-lg font-semibold text-sm lg:text-base transition-colors duration-200 whitespace-nowrap ${
                 isContactPage 
-                  ? 'bg-[#2A7F7F] text-white' 
+                  ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
                   : 'bg-[#3BB5AD] hover:bg-[#2FA5A0] text-white'
               }`}
             >
@@ -108,7 +108,7 @@ function Header() {
 
           {/* Hamburger Menu Button - Always visible on right */}
           <button 
-            className="md:hidden text-[#1A1A1A] focus:outline-none flex-shrink-0 z-50"
+            className="md:hidden text-white focus:outline-none flex-shrink-0 z-50"
             aria-label="Toggle menu"
             onClick={toggleMenu}
           >
@@ -126,12 +126,12 @@ function Header() {
 
         {/* Mobile Menu - Shows on small screens when menu is open */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-40">
+          <div className="md:hidden absolute top-full left-0 right-0 shadow-lg border-t border-gray-600 z-40" style={{ backgroundColor: '#0D4A3A' }}>
             <div className="flex flex-col px-4 py-4 space-y-3">
               <Link 
                 to="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-base py-2"
+                className="text-white hover:text-[#4ECDC4] transition-colors duration-200 font-medium text-base py-2"
               >
                 Home
               </Link>
@@ -140,8 +140,8 @@ function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 className={`transition-colors duration-200 font-medium text-base py-2 px-3 rounded ${
                   isAboutPage 
-                    ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
-                    : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+                    ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
+                    : 'text-white hover:text-[#4ECDC4]'
                 }`}
               >
                 About
@@ -151,8 +151,8 @@ function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 className={`transition-colors duration-200 font-medium text-base py-2 px-3 rounded ${
                   isServicesPage 
-                    ? 'bg-[#E0F7F5] text-[#1A2B5B]' 
-                    : 'text-[#1A1A1A] hover:text-[#0D4A3A]'
+                    ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
+                    : 'text-white hover:text-[#4ECDC4]'
                 }`}
               >
                 Services
@@ -160,7 +160,7 @@ function Header() {
               <a 
                 href="#projects"
                 onClick={handleProjectsClick}
-                className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-base py-2"
+                className="text-white hover:text-[#4ECDC4] transition-colors duration-200 font-medium text-base py-2"
               >
                 Projects
               </a>
@@ -170,7 +170,7 @@ function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 className={`px-5 py-2.5 rounded-lg font-semibold text-base transition-colors duration-200 text-center ${
                   isContactPage 
-                    ? 'bg-[#2A7F7F] text-white' 
+                    ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
                     : 'bg-[#3BB5AD] hover:bg-[#2FA5A0] text-white'
                 }`}
               >
