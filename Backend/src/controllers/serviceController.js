@@ -42,7 +42,7 @@ export const getServiceById = async (req, res, next) => {
 // Create service
 export const createService = async (req, res, next) => {
   try {
-    const { title, description, keyFeatures, technologies, benefits, implementationSteps, successStory, order, isActive, iconUrl, iconPublicId } = req.body;
+    const { title, description, keyFeatures, technologies, benefits, implementationSteps, successStory, order, isActive } = req.body;
 
     // Validate required fields
     if (!title || !description) {
@@ -54,71 +54,53 @@ export const createService = async (req, res, next) => {
     let iconData = null;
     let imageData = null;
 
-    // First check if icon URL is provided directly (from IconSelector)
-    if (iconUrl) {
-      iconData = {
-        url: iconUrl,
-        publicId: iconPublicId || ''
-      };
-    }
-    // Otherwise, handle icon file upload
-    else {
-      // Handle icon file
-      const iconFile = req.files?.icon ? req.files.icon[0] : (req.file?.fieldname === 'icon' ? req.file : null);
+    // Handle icon file upload (icon is now sent as PNG file)
+    // No need to check iconUrl anymore - icon comes as file
+    const iconFile = req.files?.icon ? req.files.icon[0] : (req.file?.fieldname === 'icon' ? req.file : null);
 
-      if (iconFile) {
-        const file = iconFile;
-        // Check if file is from CloudinaryStorage (already uploaded)
-        const imageUrl = file.secure_url || file.url || file.path;
-        const publicId = file.public_id || file.filename;
+    if (iconFile) {
+      const file = iconFile;
+      // Check if file is from CloudinaryStorage (already uploaded)
+      const imageUrl = file.secure_url || file.url || file.path;
+      const publicId = file.public_id || file.filename;
 
-        if (imageUrl && publicId) {
-          // File is from CloudinaryStorage - already uploaded
-          iconData = {
-            url: imageUrl,
-            publicId: publicId
+      if (imageUrl && publicId) {
+        // File is from CloudinaryStorage - already uploaded
+        iconData = {
+          url: imageUrl,
+          publicId: publicId
+        };
+      } else if (file.buffer) {
+        // File is from memory storage - need to upload to Cloudinary manually
+        try {
+          // Icons are now PNG files, apply transformations
+          let uploadOptions = {
+            folder: 'inhabittech/icons',
+            resource_type: 'image',
+            allowed_formats: ['png'],
+            transformation: [{ width: 200, height: 200, crop: 'fill', format: 'png' }],
           };
-        } else if (file.buffer) {
-          // File is from memory storage - need to upload to Cloudinary manually
-          try {
-            // Check if file is SVG
-            const isSVG = file.mimetype === 'image/svg+xml' || file.mimetype === 'image/svg' || file.originalname?.endsWith('.svg');
 
-            let uploadOptions = {
-              folder: 'inhabittech/icons',
-              resource_type: 'image',
+          const result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              uploadOptions,
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+            uploadStream.end(file.buffer);
+          });
+
+          if (result && (result.secure_url || result.url)) {
+            iconData = {
+              url: result.secure_url || result.url,
+              publicId: result.public_id
             };
-
-            if (isSVG) {
-              // For SVG files, upload as image without format restrictions or transformations
-              // Don't use allowed_formats for SVG - Cloudinary handles it automatically
-            } else {
-              // For non-SVG files, apply transformations
-              uploadOptions.allowed_formats = ['jpg', 'jpeg', 'png', 'webp'];
-              uploadOptions.transformation = [{ width: 200, height: 200, crop: 'fill', format: 'png' }];
-            }
-
-            const result = await new Promise((resolve, reject) => {
-              const uploadStream = cloudinary.uploader.upload_stream(
-                uploadOptions,
-                (error, result) => {
-                  if (error) reject(error);
-                  else resolve(result);
-                }
-              );
-              uploadStream.end(file.buffer);
-            });
-
-            if (result && (result.secure_url || result.url)) {
-              iconData = {
-                url: result.secure_url || result.url,
-                publicId: result.public_id
-              };
-            }
-          } catch (uploadError) {
-            // If upload fails, return error
-            return sendError(res, 'Failed to upload icon: ' + (uploadError.message || 'Unknown error'), 400);
           }
+        } catch (uploadError) {
+          // If upload fails, return error
+          return sendError(res, 'Failed to upload icon: ' + (uploadError.message || 'Unknown error'), 400);
         }
       }
     }
@@ -235,6 +217,7 @@ export const createService = async (req, res, next) => {
     });
 
     const createdService = await Service.findById(service._id);
+    console.log('createService - Created service icon:', createdService.icon);
     sendSuccess(res, 'Service created successfully', { service: createdService }, 201);
   } catch (error) {
     // Delete uploaded icon if service creation fails
@@ -267,79 +250,57 @@ export const updateService = async (req, res, next) => {
     // When using upload.fields(), files are in req.files
     let iconData = null;
 
-    // First check if icon URL is provided directly (from IconSelector)
-    if (iconUrl) {
-      // Delete old icon from Cloudinary if exists and different
-      if (service.icon && service.icon.publicId && service.icon.publicId !== iconPublicId) {
+    // Handle icon file upload (icon is now sent as PNG file)
+    const iconFile = req.files?.icon ? req.files.icon[0] : (req.file?.fieldname === 'icon' ? req.file : null);
+
+    if (iconFile) {
+      const file = iconFile;
+      // Delete old icon from Cloudinary if exists
+      if (service.icon && service.icon.publicId) {
         await cloudinary.uploader.destroy(service.icon.publicId).catch(() => { });
       }
-      iconData = {
-        url: iconUrl,
-        publicId: iconPublicId || ''
-      };
-    }
-    // Otherwise, handle icon file upload
-    else {
-      const iconFile = req.files?.icon ? req.files.icon[0] : (req.file?.fieldname === 'icon' ? req.file : null);
 
-      if (iconFile) {
-        const file = iconFile;
-        // Delete old icon from Cloudinary if exists
-        if (service.icon && service.icon.publicId) {
-          await cloudinary.uploader.destroy(service.icon.publicId).catch(() => { });
-        }
+      // Check if file is from CloudinaryStorage (already uploaded)
+      const imageUrl = file.secure_url || file.url || file.path;
+      const publicId = file.public_id || file.filename;
 
-        // Check if file is from CloudinaryStorage (already uploaded)
-        const imageUrl = file.secure_url || file.url || file.path;
-        const publicId = file.public_id || file.filename;
-
-        if (imageUrl && publicId) {
-          // File is from CloudinaryStorage - already uploaded
-          iconData = {
-            url: imageUrl,
-            publicId: publicId
+      if (imageUrl && publicId) {
+        // File is from CloudinaryStorage - already uploaded
+        iconData = {
+          url: imageUrl,
+          publicId: publicId
+        };
+      } else if (file.buffer) {
+        // File is from memory storage - need to upload to Cloudinary manually
+        try {
+          // Icons are now PNG files, apply transformations
+          let uploadOptions = {
+            folder: 'inhabittech/icons',
+            resource_type: 'image',
+            allowed_formats: ['png'],
+            transformation: [{ width: 200, height: 200, crop: 'fill', format: 'png' }],
           };
-        } else if (file.buffer) {
-          // File is from memory storage - need to upload to Cloudinary manually
-          try {
-            // Check if file is SVG
-            const isSVG = file.mimetype === 'image/svg+xml' || file.mimetype === 'image/svg' || file.originalname?.endsWith('.svg');
 
-            let uploadOptions = {
-              folder: 'inhabittech/icons',
-              resource_type: 'image',
+          const result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              uploadOptions,
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+            uploadStream.end(file.buffer);
+          });
+
+          if (result && (result.secure_url || result.url)) {
+            iconData = {
+              url: result.secure_url || result.url,
+              publicId: result.public_id
             };
-
-            if (isSVG) {
-              // For SVG files, upload as image without format restrictions or transformations
-              // Don't use allowed_formats for SVG - Cloudinary handles it automatically
-            } else {
-              // For non-SVG files, apply transformations
-              uploadOptions.allowed_formats = ['jpg', 'jpeg', 'png', 'webp'];
-              uploadOptions.transformation = [{ width: 200, height: 200, crop: 'fill', format: 'png' }];
-            }
-
-            const result = await new Promise((resolve, reject) => {
-              const uploadStream = cloudinary.uploader.upload_stream(
-                uploadOptions,
-                (error, result) => {
-                  if (error) reject(error);
-                  else resolve(result);
-                }
-              );
-              uploadStream.end(file.buffer);
-            });
-
-            if (result && (result.secure_url || result.url)) {
-              iconData = {
-                url: result.secure_url || result.url,
-                publicId: result.public_id
-              };
-            }
-          } catch (uploadError) {
-            // If upload fails, return error
-            return sendError(res, 'Failed to upload icon: ' + (uploadError.message || 'Unknown error'), 400);
           }
+        } catch (uploadError) {
+          // If upload fails, return error
+          return sendError(res, 'Failed to upload icon: ' + (uploadError.message || 'Unknown error'), 400);
         }
       }
     }
@@ -528,22 +489,13 @@ export const uploadIcon = async (req, res, next) => {
     } else if (file.buffer) {
       // File is from memory storage - need to upload to Cloudinary manually
       try {
-        // Check if file is SVG
-        const isSVG = file.mimetype === 'image/svg+xml' || file.mimetype === 'image/svg' || file.originalname?.endsWith('.svg');
-
+        // Icons are now PNG files, apply transformations
         let uploadOptions = {
           folder: 'inhabittech/icons',
-          resource_type: 'image', // Explicitly set resource type
+          resource_type: 'image',
+          allowed_formats: ['png'],
+          transformation: [{ width: 200, height: 200, crop: 'fill', format: 'png' }],
         };
-
-        if (isSVG) {
-          // For SVG files, upload as image without format restrictions or transformations
-          // Don't use allowed_formats for SVG - Cloudinary handles it automatically
-        } else {
-          // For non-SVG files, apply transformations
-          uploadOptions.allowed_formats = ['jpg', 'jpeg', 'png', 'webp'];
-          uploadOptions.transformation = [{ width: 200, height: 200, crop: 'fill', format: 'png' }];
-        }
 
         const result = await new Promise((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(

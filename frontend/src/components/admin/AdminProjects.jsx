@@ -122,7 +122,7 @@ function AdminProjects() {
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-primary mb-2">{project.title}</h3>
                       <p className="text-sm text-text-gray mb-1">{project.client}</p>
-                      <p className="text-sm text-text-gray mb-4">{project.category}</p>
+                      <p className="text-sm text-text-gray mb-4">{project.category?.title || project.category || 'N/A'}</p>
                       <div className="flex items-center justify-between">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                           project.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
