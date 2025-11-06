@@ -24,11 +24,10 @@ const serviceIcons = [
   { name: 'server', label: 'Server' },
 ];
 
-function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
+function IconSelector({ onIconSelect, existingIconUrl }) {
   const [isOpen, setIsOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(existingIconUrl || null);
   const [selectedIconName, setSelectedIconName] = useState(null);
-  const [iconFile, setIconFile] = useState(null);
 
   // Convert Material Icon to PNG by rendering Material Symbol to canvas
   const iconToPNG = async (iconName) => {
@@ -37,11 +36,10 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
       canvas.width = 200;
       canvas.height = 200;
       const ctx = canvas.getContext('2d');
-      
-      // Fill background with primary color
-      ctx.fillStyle = '#2A7F7F';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
+
+      // Clear canvas with transparent background
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
       // Create a temporary div with Material Symbol to render
       const div = document.createElement('div');
       div.style.position = 'absolute';
@@ -49,36 +47,35 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
       div.style.top = '-9999px';
       div.style.width = '200px';
       div.style.height = '200px';
-      div.style.backgroundColor = '#2A7F7F';
+      div.style.backgroundColor = 'transparent';
       div.style.display = 'flex';
       div.style.alignItems = 'center';
       div.style.justifyContent = 'center';
-      
+
       const span = document.createElement('span');
       span.className = 'material-symbols-outlined';
       span.textContent = iconName;
       span.style.fontSize = '120px';
-      span.style.color = 'white';
+      span.style.color = '#2A7F7F'; // Use primary color for icon
       div.appendChild(span);
       document.body.appendChild(div);
-      
+
       // Wait for font to load and element to render
       setTimeout(() => {
         try {
-          // Use html2canvas approach or simple canvas text rendering
-          // For now, use canvas to render the Material Symbol character
-          ctx.fillStyle = 'white';
+          // Render the Material Symbol character with primary color
+          ctx.fillStyle = '#2A7F7F'; // Primary color for icon
           ctx.font = '120px "Material Symbols Outlined"';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          
+
           // Draw the icon character (Material Symbols use icon name as character)
           ctx.fillText(iconName, canvas.width / 2, canvas.height / 2);
-          
+
           // Clean up
           document.body.removeChild(div);
-          
-          // Convert to PNG
+
+          // Convert to PNG with transparency
           canvas.toBlob((blob) => {
             if (blob) {
               const file = new File([blob], `${iconName}.png`, { type: 'image/png' });
@@ -87,17 +84,16 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
               reject(new Error('Failed to convert icon to PNG'));
             }
           }, 'image/png');
-        } catch (error) {
-          // Fallback: create a simple colored square with icon name initial
+        } catch {
+          // Fallback: create icon with primary color, no background
           document.body.removeChild(div);
-          ctx.fillStyle = '#2A7F7F';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = 'white';
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#2A7F7F'; // Primary color for icon
           ctx.font = 'bold 60px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(iconName.charAt(0).toUpperCase(), canvas.width / 2, canvas.height / 2);
-          
+
           canvas.toBlob((blob) => {
             if (blob) {
               const file = new File([blob], `${iconName}.png`, { type: 'image/png' });
@@ -116,14 +112,13 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
     try {
       // Convert icon to PNG
       const pngFile = await iconToPNG(icon.name);
-      
+
       // Create preview URL
       const preview = URL.createObjectURL(pngFile);
-      
+
       setPreviewUrl(preview);
       setSelectedIconName(icon.name);
-      setIconFile(pngFile);
-      
+
       // Pass icon file and name to parent
       onIconSelect(icon.name, pngFile);
       setIsOpen(false);
@@ -140,7 +135,6 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
     }
     setPreviewUrl(null);
     setSelectedIconName(null);
-    setIconFile(null);
     onIconSelect(null, null);
   };
 
@@ -149,7 +143,7 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
       <label className="block text-sm font-medium text-text-dark mb-2">
         Icon <span className="text-red-500">*</span>
       </label>
-      
+
       {/* Selected Icon Preview */}
       {(selectedIconName || previewUrl) && (
         <div className="mb-4 p-4 border border-border-gray rounded-lg bg-bg-light">
@@ -214,11 +208,10 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
                       key={icon.name}
                       type="button"
                       onClick={() => handleIconSelect(icon)}
-                      className={`p-3 rounded-lg border-2 transition-all hover:bg-bg-light hover:scale-105 ${
-                        selectedIconName === icon.name
-                          ? 'border-primary bg-primary/10'
-                          : 'border-border-gray'
-                      } cursor-pointer`}
+                      className={`p-3 rounded-lg border-2 transition-all hover:bg-bg-light hover:scale-105 ${selectedIconName === icon.name
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border-gray'
+                        } cursor-pointer`}
                       title={icon.label}
                     >
                       <span className="material-symbols-outlined text-3xl text-primary block text-center">

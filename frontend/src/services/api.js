@@ -91,6 +91,14 @@ export const adminAPI = {
       method: 'DELETE',
     });
   },
+
+  // Change password
+  changePassword: async (currentPassword, newPassword) => {
+    return apiRequest('/admin/change-password', {
+      method: 'PUT',
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+  },
 };
 
 // Project API methods
