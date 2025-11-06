@@ -145,8 +145,8 @@ function Services() {
                   key={service._id}
                   onClick={() => setActiveTab(service._id)}
                   className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-base md:text-lg transition-all duration-200 ${activeTab === service._id
-                      ? 'text-white'
-                      : 'text-gray-700 bg-white border border-gray-200 hover:bg-gray-50'
+                    ? 'text-white'
+                    : 'text-gray-700 bg-white border border-gray-200 hover:bg-gray-50'
                     }`}
                   style={
                     activeTab === service._id
@@ -172,10 +172,15 @@ function Services() {
               <div
                 className="rounded-xl p-8 md:p-12 h-80 md:h-96 flex flex-col items-start justify-start relative overflow-hidden"
                 style={{
-                  background: 'linear-gradient(to bottom right, #FFFFFF 0%, #E0F7F5 100%)'
+                  background: currentService.image?.url
+                    ? `url(${currentService.image.url}) center/cover`
+                    : 'linear-gradient(to bottom right, #FFFFFF 0%, #E0F7F5 100%)'
                 }}
               >
-                <div className="flex items-center gap-4 mb-4">
+                {currentService.image?.url ? (
+                  <div className="absolute inset-0 bg-black/20 rounded-xl"></div>
+                ) : null}
+                <div className={`flex items-center gap-4 mb-4 ${currentService.image?.url ? 'relative z-10' : ''}`}>
                   <div
                     className="w-16 h-16 rounded-lg flex items-center justify-center flex-shrink-0"
                     style={{ backgroundColor: '#2A7F7F' }}
@@ -183,8 +188,8 @@ function Services() {
                     {renderLargeIcon(currentService)}
                   </div>
                   <h3
-                    className="text-xl md:text-2xl font-extrabold"
-                    style={{ color: '#2A7F7F' }}
+                    className={`text-xl md:text-2xl font-extrabold ${currentService.image?.url ? 'text-white' : ''}`}
+                    style={currentService.image?.url ? {} : { color: '#2A7F7F' }}
                   >
                     {currentService.title}
                   </h3>

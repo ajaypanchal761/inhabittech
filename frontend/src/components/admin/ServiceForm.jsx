@@ -19,6 +19,10 @@ function ServiceForm() {
       url: '',
       publicId: '',
     },
+    image: {
+      url: '',
+      publicId: '',
+    },
     keyFeatures: [],
     technologies: [],
     benefits: [],
@@ -33,6 +37,8 @@ function ServiceForm() {
     isActive: true,
   });
   const [selectedIconName, setSelectedIconName] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Temporary state for array inputs
   const [keyFeatureInput, setKeyFeatureInput] = useState('');
@@ -54,6 +60,7 @@ function ServiceForm() {
           title: service.title || '',
           description: service.description || '',
           icon: service.icon || { url: '', publicId: '' },
+          image: service.image || { url: '', publicId: '' },
           keyFeatures: service.keyFeatures || [],
           technologies: service.technologies || [],
           benefits: service.benefits || [],
@@ -70,6 +77,10 @@ function ServiceForm() {
         // Set selected icon name if icon exists
         if (service.icon && service.icon.url) {
           setSelectedIconName('selected'); // We'll store the icon URL but not the name
+        }
+        // Set image preview if image exists
+        if (service.image && service.image.url) {
+          setImagePreview(service.image.url);
         }
       }
     } catch (error) {
@@ -202,16 +213,63 @@ function ServiceForm() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    setFormData(prev => ({
+      ...prev,
+      image: { url: '', publicId: '' }
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const formDataToSend = new FormData();
+
+      // Add all form fields
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('keyFeatures', JSON.stringify(formData.keyFeatures));
+      formDataToSend.append('technologies', JSON.stringify(formData.technologies));
+      formDataToSend.append('benefits', JSON.stringify(formData.benefits));
+      formDataToSend.append('implementationSteps', JSON.stringify(formData.implementationSteps));
+      formDataToSend.append('successStory', JSON.stringify(formData.successStory));
+      formDataToSend.append('order', formData.order);
+      formDataToSend.append('isActive', formData.isActive);
+
+      // Add icon URL if icon is selected (icon is already uploaded via IconSelector)
+      if (formData.icon?.url) {
+        formDataToSend.append('iconUrl', formData.icon.url);
+        formDataToSend.append('iconPublicId', formData.icon.publicId || '');
+      }
+
+      // Add image file if new image is selected
+      if (imageFile) {
+        formDataToSend.append('image', imageFile);
+      }
+
+      // Handle image deletion in edit mode
+      if (isEditMode && !imageFile && formData.image.url) {
+        // If no new image and old image exists, keep the old one
+        // If user wants to delete, they need to explicitly remove it
+      }
+
       if (isEditMode) {
-        await serviceAPI.updateService(id, formData);
+        await serviceAPI.updateService(id, formDataToSend);
         alert('Service updated successfully!');
       } else {
-        await serviceAPI.createService(formData);
+        await serviceAPI.createService(formDataToSend);
         alert('Service created successfully!');
       }
       navigate('/admin/services');
@@ -306,6 +364,38 @@ function ServiceForm() {
                     onIconSelect={handleIconSelect}
                     existingIconUrl={formData.icon?.url}
                   />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-text-dark mb-2">
+                    Service Image
+                  </label>
+                  {imagePreview && (
+                    <div className="mb-4 p-4 border border-border-gray rounded-lg bg-bg-light">
+                      <div className="relative inline-block">
+                        <img
+                          src={imagePreview}
+                          alt="Service preview"
+                          className="w-full h-48 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="absolute top-2 right-2 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full px-4 py-2 border border-border-gray rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                  />
+                  <p className="text-xs text-text-gray mt-2">
+                    Upload a service image (JPG, PNG, WebP - max 10MB)
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-dark mb-2">
