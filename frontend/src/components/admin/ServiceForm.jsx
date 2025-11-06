@@ -37,6 +37,8 @@ function ServiceForm() {
     isActive: true,
   });
   const [selectedIconName, setSelectedIconName] = useState(null);
+  const [iconFile, setIconFile] = useState(null);
+  const [iconPreview, setIconPreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -75,9 +77,9 @@ function ServiceForm() {
           order: service.order || 0,
           isActive: service.isActive !== undefined ? service.isActive : true,
         });
-        // Set selected icon name if icon exists
+        // Set icon preview if icon exists
         if (service.icon && service.icon.url) {
-          setSelectedIconName('selected'); // We'll store the icon URL but not the name
+          setIconPreview(service.icon.url);
         }
         // Set image preview if image exists
         if (service.image && service.image.url) {
@@ -99,17 +101,19 @@ function ServiceForm() {
     }));
   };
 
-  const handleIconSelect = (iconName, iconUrl, iconPublicId) => {
-    if (iconName && iconUrl) {
-      setFormData(prev => ({
-        ...prev,
-        icon: {
-          url: iconUrl,
-          publicId: iconPublicId || ''
-        }
-      }));
+  const handleIconSelect = (iconName, iconFile) => {
+    if (iconName && iconFile) {
       setSelectedIconName(iconName);
+      setIconFile(iconFile);
+      const preview = URL.createObjectURL(iconFile);
+      setIconPreview(preview);
     } else {
+      setSelectedIconName(null);
+      setIconFile(null);
+      if (iconPreview && iconPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(iconPreview);
+      }
+      setIconPreview(null);
       setFormData(prev => ({
         ...prev,
         icon: {
@@ -117,7 +121,6 @@ function ServiceForm() {
           publicId: ''
         }
       }));
-      setSelectedIconName(null);
     }
   };
 
@@ -249,10 +252,9 @@ function ServiceForm() {
       formDataToSend.append('order', formData.order);
       formDataToSend.append('isActive', formData.isActive);
 
-      // Add icon URL if icon is selected (icon is already uploaded via IconSelector)
-      if (formData.icon?.url) {
-        formDataToSend.append('iconUrl', formData.icon.url);
-        formDataToSend.append('iconPublicId', formData.icon.publicId || '');
+      // Add icon file if icon is selected (icon is converted to PNG in IconSelector)
+      if (iconFile) {
+        formDataToSend.append('icon', iconFile);
       }
 
       // Add image file if new image is selected
@@ -363,7 +365,7 @@ function ServiceForm() {
                   <IconSelector
                     selectedIcon={selectedIconName}
                     onIconSelect={handleIconSelect}
-                    existingIconUrl={formData.icon?.url}
+                    existingIconUrl={iconPreview || formData.icon?.url}
                   />
                 </div>
                 <div className="md:col-span-2">

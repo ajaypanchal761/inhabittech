@@ -12,9 +12,9 @@ const projectSchema = new mongoose.Schema({
     trim: true
   },
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Service',
     required: [true, 'Category is required'],
-    trim: true
   },
   solutionType: {
     type: String,

@@ -6,8 +6,7 @@ import {
   getServiceById,
   createService,
   updateService,
-  deleteService,
-  uploadIcon
+  deleteService
 } from '../controllers/serviceController.js';
 
 const router = express.Router();
@@ -19,7 +18,7 @@ router.get('/:id', getServiceById);
 // Protected routes (require authentication)
 router.use(authenticateToken);
 
-router.post('/upload-icon', upload.single('icon'), handleMulterError, uploadIcon);
+// Removed upload-icon route - icons are now uploaded directly with service create/update
 router.post('/', upload.fields([{ name: 'icon', maxCount: 1 }, { name: 'image', maxCount: 1 }]), handleMulterError, createService);
 router.put('/:id', upload.fields([{ name: 'icon', maxCount: 1 }, { name: 'image', maxCount: 1 }]), handleMulterError, updateService);
 router.delete('/:id', deleteService);

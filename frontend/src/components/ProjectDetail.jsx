@@ -149,7 +149,7 @@ function ProjectDetail() {
             className="text-base md:text-lg mb-2"
             style={{ color: '#4ECDC4' }}
           >
-            {project.category}
+            {project.category?.title || project.category || 'N/A'}
           </p>
           {project.solutionType && (
             <p className="text-white text-base md:text-lg mb-4 md:mb-6">

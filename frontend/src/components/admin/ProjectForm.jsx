@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { projectAPI } from '../../services/api';
+import { projectAPI, serviceAPI } from '../../services/api';
 import AdminSidebar from './AdminSidebar';
 import { useAdmin } from '../../context/AdminContext';
 
@@ -31,12 +31,26 @@ function ProjectForm() {
   const [techInput, setTechInput] = useState('');
   const [challengeInput, setChallengeInput] = useState('');
   const [solutionInput, setSolutionInput] = useState('');
+  const [services, setServices] = useState([]);
 
   useEffect(() => {
+    fetchServices();
     if (isEditMode) {
       fetchProject();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const fetchServices = async () => {
+    try {
+      const response = await serviceAPI.getAllServices(null); // Get all services (active and inactive)
+      if (response.data && response.data.services) {
+        setServices(response.data.services);
+      }
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    }
+  };
 
   const fetchProject = async () => {
     try {
@@ -46,7 +60,7 @@ function ProjectForm() {
         setFormData({
           title: project.title || '',
           client: project.client || '',
-          category: project.category || '',
+          category: project.category?._id || project.category || '', // Handle both ObjectId and string (for backward compatibility)
           solutionType: project.solutionType || '',
           description: project.description || '',
           location: project.location || '',
@@ -244,15 +258,28 @@ function ProjectForm() {
                   <label className="block text-sm font-medium text-text-dark mb-2">
                     Category <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-2 border border-border-gray rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                    placeholder="Project Category"
-                  />
+                  <div className="relative">
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-border-gray rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none bg-white pr-10"
+                    >
+                      <option value="">Select a service category</option>
+                      {services.map((service) => (
+                        <option key={service._id} value={service._id}>
+                          {service.title}
+                        </option>
+                      ))}
+                    </select>
+                    {/* Dropdown Arrow */}
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-text-dark mb-2">

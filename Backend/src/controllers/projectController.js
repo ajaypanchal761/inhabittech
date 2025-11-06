@@ -20,7 +20,9 @@ export const getAllProjects = async (req, res, next) => {
     }
     // If isActive is not provided, return all projects (both active and inactive)
 
-    const projects = await Project.find(query).sort({ createdAt: -1 });
+    const projects = await Project.find(query)
+      .populate('category', 'title')
+      .sort({ createdAt: -1 });
 
     sendSuccess(res, 'Projects retrieved successfully', { projects, count: projects.length });
   } catch (error) {
@@ -32,7 +34,7 @@ export const getAllProjects = async (req, res, next) => {
 export const getProjectById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const project = await Project.findById(id);
+    const project = await Project.findById(id).populate('category', 'title');
 
     if (!project) {
       return sendError(res, 'Project not found', 404);

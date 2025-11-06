@@ -112,7 +112,7 @@ function Projects() {
                     
                     {/* Category */}
                     <p className="text-xs md:text-sm lg:text-base text-gray-600 mb-4 grow line-clamp-2">
-                      {project.category}
+                      {project.category?.title || project.category || 'N/A'}
                     </p>
                     
                     {/* Bottom Section */}

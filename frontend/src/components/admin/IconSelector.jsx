@@ -26,69 +26,122 @@ const serviceIcons = [
 
 function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(existingIconUrl || null);
+  const [selectedIconName, setSelectedIconName] = useState(null);
+  const [iconFile, setIconFile] = useState(null);
 
-  // Convert Material Icon to SVG
-  const iconToSVG = (icon) => {
-    // Create SVG for Material Icon using the SVG path
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">${icon.svg}</svg>`;
-    return svg;
-  };
-
-  // Convert SVG string to Blob
-  const svgToBlob = (svgString) => {
-    const blob = new Blob([svgString], { type: 'image/svg+xml' });
-    return blob;
+  // Convert Material Icon to PNG by rendering Material Symbol to canvas
+  const iconToPNG = async (iconName) => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 200;
+      canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      
+      // Fill background with primary color
+      ctx.fillStyle = '#2A7F7F';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Create a temporary div with Material Symbol to render
+      const div = document.createElement('div');
+      div.style.position = 'absolute';
+      div.style.left = '-9999px';
+      div.style.top = '-9999px';
+      div.style.width = '200px';
+      div.style.height = '200px';
+      div.style.backgroundColor = '#2A7F7F';
+      div.style.display = 'flex';
+      div.style.alignItems = 'center';
+      div.style.justifyContent = 'center';
+      
+      const span = document.createElement('span');
+      span.className = 'material-symbols-outlined';
+      span.textContent = iconName;
+      span.style.fontSize = '120px';
+      span.style.color = 'white';
+      div.appendChild(span);
+      document.body.appendChild(div);
+      
+      // Wait for font to load and element to render
+      setTimeout(() => {
+        try {
+          // Use html2canvas approach or simple canvas text rendering
+          // For now, use canvas to render the Material Symbol character
+          ctx.fillStyle = 'white';
+          ctx.font = '120px "Material Symbols Outlined"';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          
+          // Draw the icon character (Material Symbols use icon name as character)
+          ctx.fillText(iconName, canvas.width / 2, canvas.height / 2);
+          
+          // Clean up
+          document.body.removeChild(div);
+          
+          // Convert to PNG
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const file = new File([blob], `${iconName}.png`, { type: 'image/png' });
+              resolve(file);
+            } else {
+              reject(new Error('Failed to convert icon to PNG'));
+            }
+          }, 'image/png');
+        } catch (error) {
+          // Fallback: create a simple colored square with icon name initial
+          document.body.removeChild(div);
+          ctx.fillStyle = '#2A7F7F';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = 'white';
+          ctx.font = 'bold 60px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(iconName.charAt(0).toUpperCase(), canvas.width / 2, canvas.height / 2);
+          
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const file = new File([blob], `${iconName}.png`, { type: 'image/png' });
+              resolve(file);
+            } else {
+              reject(new Error('Failed to convert icon to PNG'));
+            }
+          }, 'image/png');
+        }
+      }, 200); // Wait 200ms for font to load
+    });
   };
 
   // Handle icon selection
   const handleIconSelect = async (icon) => {
     try {
-      setUploading(true);
+      // Convert icon to PNG
+      const pngFile = await iconToPNG(icon.name);
       
-      // Convert icon to SVG
-      const svgString = iconToSVG(icon);
+      // Create preview URL
+      const preview = URL.createObjectURL(pngFile);
       
-      // Convert SVG to File for upload
-      const blob = svgToBlob(svgString);
-      const file = new File([blob], `${icon.name}.svg`, { type: 'image/svg+xml' });
+      setPreviewUrl(preview);
+      setSelectedIconName(icon.name);
+      setIconFile(pngFile);
       
-      // Upload to Cloudinary via backend
-      const formData = new FormData();
-      formData.append('icon', file);
-      
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('http://localhost:5000/api/services/upload-icon', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to upload icon');
-      }
-      
-      const data = await response.json();
-      
-      if (data.success && data.data && data.data.icon) {
-        const iconUrl = data.data.icon.url;
-        const iconPublicId = data.data.icon.publicId;
-        setPreviewUrl(iconUrl);
-        onIconSelect(icon.name, iconUrl, iconPublicId);
-        setIsOpen(false);
-      } else {
-        throw new Error('Invalid response from server');
-      }
+      // Pass icon file and name to parent
+      onIconSelect(icon.name, pngFile);
+      setIsOpen(false);
     } catch (error) {
-      console.error('Error uploading icon:', error);
-      alert('Failed to upload icon: ' + error.message);
-    } finally {
-      setUploading(false);
+      console.error('Error converting icon:', error);
+      alert('Failed to process icon: ' + error.message);
     }
+  };
+
+  // Handle icon removal
+  const handleRemove = () => {
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewUrl(null);
+    setSelectedIconName(null);
+    setIconFile(null);
+    onIconSelect(null, null);
   };
 
   return (
@@ -98,7 +151,7 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
       </label>
       
       {/* Selected Icon Preview */}
-      {(selectedIcon || previewUrl) && (
+      {(selectedIconName || previewUrl) && (
         <div className="mb-4 p-4 border border-border-gray rounded-lg bg-bg-light">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-lg">
@@ -106,26 +159,18 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
                 <img src={previewUrl} alt="Selected icon" className="w-12 h-12 object-contain" />
               ) : (
                 <span className="material-symbols-outlined text-4xl text-primary">
-                  {selectedIcon.name || selectedIcon}
+                  {selectedIconName}
                 </span>
               )}
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-text-dark">
-                Selected: {typeof selectedIcon === 'string' ? serviceIcons.find(icon => icon.name === selectedIcon)?.label : selectedIcon.label || selectedIcon.name}
+                Selected: {serviceIcons.find(icon => icon.name === selectedIconName)?.label || selectedIconName}
               </p>
-              {previewUrl && (
-                <p className="text-xs text-text-gray mt-1 break-all">
-                  {previewUrl}
-                </p>
-              )}
             </div>
             <button
               type="button"
-              onClick={() => {
-                onIconSelect(null, null, null);
-                setPreviewUrl(null);
-              }}
+              onClick={handleRemove}
               className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm"
             >
               Remove
@@ -139,11 +184,10 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          disabled={uploading}
-          className="w-full px-4 py-2 border border-border-gray rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white hover:bg-bg-light transition-colors flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-2 border border-border-gray rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white hover:bg-bg-light transition-colors flex items-center justify-between"
         >
           <span className="text-text-dark">
-            {uploading ? 'Uploading...' : (selectedIcon || previewUrl) ? `Icon: ${typeof selectedIcon === 'string' ? serviceIcons.find(icon => icon.name === selectedIcon)?.label || selectedIcon : 'Selected'}` : 'Select an Icon'}
+            {(selectedIconName || previewUrl) ? `Icon: ${serviceIcons.find(icon => icon.name === selectedIconName)?.label || selectedIconName}` : 'Select an Icon'}
           </span>
           <svg
             className={`w-5 h-5 text-text-gray transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -170,12 +214,11 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
                       key={icon.name}
                       type="button"
                       onClick={() => handleIconSelect(icon)}
-                      disabled={uploading}
                       className={`p-3 rounded-lg border-2 transition-all hover:bg-bg-light hover:scale-105 ${
-                        (typeof selectedIcon === 'string' ? selectedIcon === icon.name : selectedIcon?.name === icon.name)
+                        selectedIconName === icon.name
                           ? 'border-primary bg-primary/10'
                           : 'border-border-gray'
-                      } ${uploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                      } cursor-pointer`}
                       title={icon.label}
                     >
                       <span className="material-symbols-outlined text-3xl text-primary block text-center">
@@ -194,7 +237,7 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
       </div>
 
       <p className="text-xs text-text-gray mt-2">
-        Select an icon from the list. The icon will be uploaded to Cloudinary automatically.
+        Select an icon from the list. The icon will be converted to PNG and uploaded with the service.
       </p>
     </div>
   );
