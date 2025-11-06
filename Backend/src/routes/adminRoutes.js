@@ -7,7 +7,8 @@ import {
   getAllAdmins,
   getAdminById,
   updateAdmin,
-  deleteAdmin
+  deleteAdmin,
+  changePassword
 } from '../controllers/adminController.js';
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.post('/login', loginAdmin);
 router.use(authenticateToken);
 
 router.get('/profile', getAdminProfile);
+router.put('/change-password', changePassword);
 router.get('/', getAllAdmins);
 router.get('/:id', getAdminById);
 router.put('/:id', updateAdmin);

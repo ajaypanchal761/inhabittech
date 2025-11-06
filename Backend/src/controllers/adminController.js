@@ -177,3 +177,41 @@ export const deleteAdmin = async (req, res, next) => {
   }
 };
 
+// Change Password
+export const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const adminId = req.admin.id;
+
+    // Validate required fields
+    if (!currentPassword || !newPassword) {
+      return sendError(res, 'Current password and new password are required', 400);
+    }
+
+    // Validate new password length
+    if (newPassword.length < 6) {
+      return sendError(res, 'New password must be at least 6 characters long', 400);
+    }
+
+    // Find admin and include password field
+    const admin = await Admin.findById(adminId).select('+password');
+    if (!admin) {
+      return sendError(res, 'Admin not found', 404);
+    }
+
+    // Check current password
+    const isPasswordValid = await admin.comparePassword(currentPassword);
+    if (!isPasswordValid) {
+      return sendError(res, 'Current password is incorrect', 401);
+    }
+
+    // Update password
+    admin.password = newPassword;
+    await admin.save();
+
+    sendSuccess(res, 'Password changed successfully');
+  } catch (error) {
+    next(error);
+  }
+};
+
