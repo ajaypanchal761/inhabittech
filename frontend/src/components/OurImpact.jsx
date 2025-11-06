@@ -70,78 +70,78 @@ function OurImpact() {
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-white"
+      className="py-12 md:py-16 lg:py-24 bg-white overflow-x-hidden w-full"
       style={{
         background: 'linear-gradient(to right, #1A2B2B 0%, #2A4A4A 100%)',
       }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Main Heading */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-4 md:mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-center mb-4 md:mb-6">
           <span style={{ color: '#4ECDC4' }}>Our</span>{' '}
           <span style={{ color: '#FF8C00' }}>Impact</span>
         </h2>
 
         {/* Subtitle */}
-        <p className="text-white text-center text-base md:text-lg mb-12 md:mb-16 max-w-3xl mx-auto">
+        <p className="text-white text-center text-sm md:text-base lg:text-lg mb-8 md:mb-12 lg:mb-16 max-w-3xl mx-auto px-4">
           Delivering measurable results across the hospitality industry
         </p>
 
         {/* Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-12 lg:mb-16">
           {/* Card 1 */}
           <div 
-            className="rounded-2xl p-6 md:p-8 text-center backdrop-blur-sm"
+            className="rounded-2xl p-4 md:p-6 lg:p-8 text-center backdrop-blur-sm"
             style={{
               backgroundColor: 'rgba(60, 100, 100, 0.8)',
               border: '2px solid rgba(78, 205, 196, 0.5)',
             }}
           >
             <div 
-                      className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 md:mb-4"
+                      className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-2 md:mb-3 lg:mb-4"
               style={{ color: '#4ECDC4' }}
             >
               <CountUp end={50} suffix="+" duration={2000} />
             </div>
-            <p className="text-white text-base md:text-lg font-normal">
+            <p className="text-white text-sm md:text-base lg:text-lg font-normal">
               Global Hotels Connected
             </p>
           </div>
 
           {/* Card 2 */}
           <div 
-            className="rounded-2xl p-6 md:p-8 text-center backdrop-blur-sm"
+            className="rounded-2xl p-4 md:p-6 lg:p-8 text-center backdrop-blur-sm"
             style={{
               backgroundColor: 'rgba(60, 100, 100, 0.8)',
               border: '2px solid rgba(78, 205, 196, 0.5)',
             }}
           >
             <div 
-                      className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 md:mb-4"
+                      className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-2 md:mb-3 lg:mb-4"
               style={{ color: '#4ECDC4' }}
             >
               <CountUp end={15} suffix="+" duration={2000} />
             </div>
-            <p className="text-white text-base md:text-lg font-normal">
+            <p className="text-white text-sm md:text-base lg:text-lg font-normal">
               Cities Served
             </p>
           </div>
 
           {/* Card 3 */}
           <div 
-            className="rounded-2xl p-6 md:p-8 text-center backdrop-blur-sm"
+            className="rounded-2xl p-4 md:p-6 lg:p-8 text-center backdrop-blur-sm"
             style={{
               backgroundColor: 'rgba(60, 100, 100, 0.8)',
               border: '2px solid rgba(78, 205, 196, 0.5)',
             }}
           >
             <div 
-                      className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-3 md:mb-4"
+                      className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-2 md:mb-3 lg:mb-4"
               style={{ color: '#4ECDC4' }}
             >
               <CountUp end={100} suffix="%" duration={2000} />
             </div>
-            <p className="text-white text-base md:text-lg font-normal">
+            <p className="text-white text-sm md:text-base lg:text-lg font-normal">
               Client Satisfaction
             </p>
           </div>

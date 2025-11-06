@@ -1,16 +1,40 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
   const isAboutPage = location.pathname === '/about'
   const isServicesPage = location.pathname === '/services'
   const isContactPage = location.pathname === '/contact'
+  const isHomePage = location.pathname === '/'
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleProjectsClick = (e) => {
+    e.preventDefault()
+    setIsMenuOpen(false)
+    if (isHomePage) {
+      // If on homepage, scroll to projects section
+      const projectsSection = document.getElementById('projects')
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    } else {
+      // If on another page, navigate to homepage first
+      navigate('/')
+      // After navigation, scroll to section
+      setTimeout(() => {
+        const projectsSection = document.getElementById('projects')
+        if (projectsSection) {
+          projectsSection.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 300)
+    }
   }
 
   return (
@@ -18,11 +42,11 @@ function Header() {
       <nav className="w-full px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-16 md:h-20 relative">
           {/* Logo - Image from assets folder - Left side */}
-          <Link to="/" className="flex items-center flex-shrink-0">
+          <Link to="/" className="flex items-center flex-shrink-0 max-w-[120px] md:max-w-none">
             <img 
               src={logo} 
               alt="Inhabit Tech Logo" 
-              className="h-20 md:h-24 lg:h-28 w-auto"
+              className="h-12 md:h-20 lg:h-24 xl:h-28 w-auto max-w-full"
               style={{ 
                 transform: 'translateY(-4px)',
                 opacity: 1
@@ -60,6 +84,7 @@ function Header() {
             </Link>
             <a 
               href="#projects" 
+              onClick={handleProjectsClick}
               className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap"
             >
               Projects
@@ -130,7 +155,7 @@ function Header() {
               </Link>
               <a 
                 href="#projects"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={handleProjectsClick}
                 className="text-[#1A1A1A] hover:text-[#0D4A3A] transition-colors duration-200 font-medium text-base py-2"
               >
                 Projects

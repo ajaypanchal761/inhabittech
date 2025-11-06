@@ -78,10 +78,28 @@
   /* Smooth Scrolling */
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
   
   /* Remove default button styles */
   button {
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  /* Prevent horizontal overflow */
+  * {
+    max-width: 100%;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }

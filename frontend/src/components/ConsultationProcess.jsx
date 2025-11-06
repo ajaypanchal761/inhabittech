@@ -50,12 +50,12 @@ function ConsultationProcess() {
   const dotColors = ['#F1C40F', '#4ECDC4', '#3498DB', '#FF6B35', '#9B59B6']
 
   return (
-    <section className="py-16 md:py-24" style={{ backgroundColor: '#F8F9FA' }}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-blue-50 overflow-x-hidden w-full">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl w-full">
         {/* Badge */}
-        <div className="flex justify-center mb-6 md:mb-8">
+        <div className="flex justify-center mb-4 md:mb-6 lg:mb-8">
           <div 
-            className="px-4 py-2 rounded-full text-sm md:text-base font-medium"
+            className="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm lg:text-base font-medium"
             style={{
               backgroundColor: '#E6FFFA',
               color: '#2A7F7F',
@@ -67,21 +67,21 @@ function ConsultationProcess() {
         </div>
 
         {/* Main Heading */}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-4 md:mb-6">
-          <span style={{ color: '#1A1A1A' }}>How We Guide Your</span>{' '}
-          <span style={{ color: '#2A7F7F' }}>Technology Transition</span>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-center mb-4 md:mb-6" style={{ color: '#1e293b' }}>
+          <span style={{ color: '#1e293b' }}>How We Guide Your</span>{' '}
+          <span style={{ color: '#0d9488' }}>Technology Transition</span>
         </h2>
 
         {/* Subtitle */}
         <p 
-          className="text-base md:text-lg text-center mb-12 md:mb-16 max-w-3xl mx-auto"
+          className="text-sm md:text-base lg:text-lg text-center mb-8 md:mb-12 lg:mb-16 max-w-3xl mx-auto px-4"
           style={{ color: '#6B6B6B' }}
         >
           Our proven methodology ensures smooth technology transitions with minimal disruption to your operations
         </p>
 
         {/* Process Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-12 lg:mb-16">
           {steps.map((step) => (
             <div 
               key={step.id}

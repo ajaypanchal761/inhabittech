@@ -22,25 +22,22 @@ function ContactForm() {
 
   return (
     <section 
-      className="py-16 md:py-24"
-      style={{
-        background: 'linear-gradient(to bottom, #1A2B2B 0%, #2A4A4A 100%)',
-      }}
+      className="py-12 md:py-16 lg:py-24 bg-gradient-to-br from-slate-900 via-teal-900 to-slate-800 overflow-x-hidden w-full"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl w-full">
         {/* Header Section */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6">
-            <span style={{ color: '#4ECDC4' }}>Ready to Transform Your</span>{' '}
-            <span style={{ color: '#FF6B35' }}>Hotel Technology?</span>
+        <div className="text-center mb-8 md:mb-12 lg:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold mb-4 md:mb-6" style={{ color: '#2dd4bf' }}>
+            <span style={{ color: '#2dd4bf' }}>Ready to Transform Your</span>{' '}
+            <span style={{ color: '#2dd4bf' }}>Hotel Technology?</span>
           </h2>
-          <p className="text-white text-base md:text-lg max-w-3xl mx-auto">
+          <p className="text-white text-sm md:text-base lg:text-lg max-w-3xl mx-auto px-4">
             Get expert consultation on your technology transition. Our advisors are ready to guide you through every step.
           </p>
         </div>
 
         {/* Main Content Boxes */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           {/* Left Box - Get in Touch */}
           <div 
             className="rounded-xl p-6 md:p-8"
@@ -50,14 +47,14 @@ function ContactForm() {
             }}
           >
             <h3 
-              className="text-2xl md:text-3xl font-extrabold mb-6 md:mb-8"
+              className="text-xl md:text-2xl lg:text-3xl font-extrabold mb-4 md:mb-6 lg:mb-8"
               style={{ color: '#4ECDC4' }}
             >
               Get in Touch
             </h3>
 
             {/* Contact Details */}
-            <div className="space-y-4 md:space-y-6 mb-6 md:mb-8">
+            <div className="space-y-3 md:space-y-4 lg:space-y-6 mb-4 md:mb-6 lg:mb-8">
               {/* Email */}
               <div className="flex items-start gap-3">
                 <div style={{ color: '#4ECDC4', fontSize: '20px', marginTop: '2px' }}>
@@ -110,7 +107,7 @@ function ContactForm() {
             {/* Why Choose Our Consultation */}
             <div>
               <h4 
-                className="text-xl md:text-2xl font-extrabold mb-4 md:mb-6"
+                className="text-lg md:text-xl lg:text-2xl font-extrabold mb-4 md:mb-6"
                 style={{ color: '#4ECDC4' }}
               >
                 Why Choose Our Consultation?

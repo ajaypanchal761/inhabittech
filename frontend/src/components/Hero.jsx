@@ -1,6 +1,6 @@
 function Hero() {
   return (
-    <section className="relative min-h-screen md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center overflow-hidden pt-20 md:pt-0">
+    <section className="relative min-h-screen md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center overflow-hidden pt-20 md:pt-0 pb-8 md:pb-0 w-full max-w-full">
       {/* Background Image with Dark Teal Overlay and Gradient */}
       <div className="absolute inset-0 z-0">
         {/* Background Image - Using same CSS as bg.txt */}
@@ -20,10 +20,10 @@ function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl py-8 md:py-0 w-full">
         {/* Pill Tag - Hospitality Technology Consultants */}
         <div 
-          className="mb-6 md:mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm"
+          className="mb-4 md:mb-8 inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full backdrop-blur-sm"
           style={{ 
             border: '1px solid #0D4A3A',
             backgroundColor: '#E0F7F5'
@@ -31,18 +31,18 @@ function Hero() {
         >
           {/* Lightbulb Icon */}
           <svg 
-            className="w-4 h-4" 
+            className="w-3 h-3 md:w-4 md:h-4" 
             fill="none" 
             stroke="#0D4A3A" 
             viewBox="0 0 24 24"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
-          <span style={{ color: '#0D4A3A' }} className="text-sm font-medium">Hospitality Technology Consultants</span>
+          <span style={{ color: '#0D4A3A' }} className="text-xs md:text-sm font-medium">Hospitality Technology Consultants</span>
         </div>
 
         {/* Main Heading - Two Lines with Color Split */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-6 md:mb-8 leading-tight">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 md:mb-6 leading-tight">
           <span className="text-white">Expert </span>
           <span style={{ color: '#4ECDC4' }}>Consultation</span>
           <span className="text-white"> for</span>
@@ -52,7 +52,7 @@ function Hero() {
         </h1>
 
         {/* Sub-heading/Description */}
-        <p className="text-white text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-white text-base md:text-xl lg:text-2xl mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed">
           We guide businesses through technology transformations with expert consultation and seamless transition management. Your trusted advisors for hospitality technology evolution.
         </p>
 
@@ -61,7 +61,7 @@ function Hero() {
           {/* Left Button - Orange with Arrow */}
           <a
             href="#contact"
-            className="group text-white px-8 py-4 rounded-lg font-medium text-base md:text-lg transition-all duration-200 flex items-center gap-2 whitespace-nowrap hover:opacity-90"
+            className="group text-white px-4 md:px-6 lg:px-8 py-3 md:py-4 rounded-lg font-medium text-sm md:text-base lg:text-lg transition-all duration-200 flex items-center gap-2 hover:opacity-90"
             style={{ 
               background: 'linear-gradient(to right, #f97316, #ea580c)'
             }}
@@ -80,7 +80,7 @@ function Hero() {
           {/* Right Button - Same CSS as bg.txt */}
           <a
             href="#services"
-            className="group px-8 py-4 border-2 font-semibold rounded-lg transition-all duration-300 whitespace-nowrap cursor-pointer hover:scale-105"
+            className="group px-4 md:px-6 lg:px-8 py-3 md:py-4 border-2 font-semibold rounded-lg transition-all duration-300 cursor-pointer hover:scale-105 text-sm md:text-base lg:text-lg"
             style={{ 
               borderColor: '#4ECDC4',
               color: '#4ECDC4',

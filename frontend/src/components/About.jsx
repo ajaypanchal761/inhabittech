@@ -1,13 +1,13 @@
 function About() {
   return (
-    <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-teal-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+    <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-teal-50 overflow-x-hidden w-full">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl w-full">
         {/* Top Section: About Inhabit Tech */}
         <div className="text-center mb-8 md:mb-12">
           {/* Main Heading */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8">
-            <span className="text-[#1A1A1A]">About</span>{' '}
-            <span style={{ color: '#20C997' }}>Inhabit Tech</span>
+          <h2 className="font-bold mb-6 md:mb-8" style={{ fontSize: '48px', fontWeight: '700', color: '#0f172a' }}>
+            <span style={{ color: '#0f172a' }}>About</span>{' '}
+            <span style={{ color: '#0d9488' }}>Inhabit Tech</span>
           </h2>
 
           {/* Body Paragraph */}
@@ -76,7 +76,6 @@ function About() {
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h.01M12 12h.01M15 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
                     <h4 className="text-xl md:text-2xl font-bold text-[#1A1A1A] mb-3">

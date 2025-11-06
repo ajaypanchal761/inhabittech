@@ -22,7 +22,7 @@ function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden w-full max-w-full">
       <Header />
       <div data-aos="fade-up">
         <Hero />

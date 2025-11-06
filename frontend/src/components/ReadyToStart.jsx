@@ -1,7 +1,7 @@
 function ReadyToStart() {
   return (
-    <section className="pt-4 md:pt-6 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <section className="pt-4 md:pt-6 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50 overflow-x-hidden w-full">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl w-full">
         <div 
           className="rounded-3xl p-6 md:p-8 lg:p-10 text-center shadow-lg"
           style={{ 
@@ -10,29 +10,14 @@ function ReadyToStart() {
         >
           {/* Heading */}
           <h3 
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-3 text-center"
-            style={{ 
-              fontSize: '48px',
-              fontWeight: '700',
-              lineHeight: '48px',
-              marginBottom: '12px',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif'
-            }}
+            className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-3 md:mb-4 text-center leading-tight"
           >
             Ready to Start Your Project?
           </h3>
           
           {/* Description */}
           <p 
-            className="text-white mb-5 text-center mx-auto leading-relaxed"
-            style={{ 
-              fontSize: '20px',
-              fontWeight: '400',
-              lineHeight: '28px',
-              marginBottom: '20px',
-              maxWidth: '100%',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif'
-            }}
+            className="text-white text-sm md:text-base lg:text-lg mb-4 md:mb-5 text-center mx-auto leading-relaxed px-2"
           >
             Join our growing list of satisfied clients and transform your hospitality business with our innovative technology solutions.
           </p>
@@ -40,15 +25,10 @@ function ReadyToStart() {
           {/* CTA Button */}
           <div className="flex justify-center">
             <button 
-              className="rounded-xl font-medium transition-all duration-200 hover:shadow-lg"
+              className="px-6 md:px-8 lg:px-10 py-3 md:py-4 rounded-xl font-medium text-sm md:text-base lg:text-lg transition-all duration-200 hover:shadow-lg"
               style={{ 
                 backgroundColor: '#FFFFFF',
-                color: '#2A7F7F',
-                fontSize: '18px',
-                fontWeight: '500',
-                borderRadius: '12px',
-                padding: '20px 40px',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif'
+                color: '#2A7F7F'
               }}
             >
               Start Your Project
