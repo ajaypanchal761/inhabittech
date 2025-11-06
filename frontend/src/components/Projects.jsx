@@ -41,7 +41,7 @@ function Projects() {
     <section id="projects" className="pt-16 md:pt-24 pb-8 md:pb-10 bg-gradient-to-br from-slate-50 to-teal-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-4" style={{ color: '#2A7F7F' }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-4" style={{ color: '#0d9488' }}>
           Our Projects
         </h2>
         
@@ -53,8 +53,8 @@ function Projects() {
         {/* Projects Completed Button */}
         <div className="flex justify-center mb-12 md:mb-16">
           <button 
-            className="px-6 md:px-8 py-3 md:py-4 rounded-xl font-medium text-white text-sm md:text-base transition-colors duration-200 hover:opacity-90"
-            style={{ backgroundColor: '#2A7F7F' }}
+            className="px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-white text-sm md:text-base transition-colors duration-200 hover:opacity-90"
+            style={{ backgroundColor: '#0d9488' }}
           >
             {projects.length} Projects Completed
           </button>
@@ -92,7 +92,7 @@ function Projects() {
                     )}
                     {/* Completed Badge */}
                     <div 
-                      className="absolute top-3 right-3 px-3 py-1 rounded-lg bg-green-500 text-white text-xs font-medium"
+                      className="absolute top-3 right-3 px-3 py-1 rounded-full bg-green-500 text-white text-xs font-medium"
                     >
                       {project.status === 'completed' ? 'Completed' : project.status || 'Completed'}
                     </div>
@@ -106,7 +106,7 @@ function Projects() {
                     </h3>
                     
                     {/* Client Name */}
-                    <p className="text-sm md:text-base mb-2" style={{ color: '#2A7F7F' }}>
+                    <p className="text-sm md:text-base font-semibold mb-2" style={{ color: '#0d9488' }}>
                       {project.client}
                     </p>
                     
@@ -117,12 +117,13 @@ function Projects() {
                     
                     {/* Bottom Section */}
                     <div className="flex items-center justify-between pt-2">
-                      <span className="text-sm font-medium capitalize" style={{ color: '#4ECDC4' }}>
+                      <span className="text-sm font-medium capitalize" style={{ color: '#0d9488' }}>
                         {project.status || 'Completed'}
                       </span>
                       <Link 
                         to={`/project/${project._id}`}
-                        className="text-sm md:text-base text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
+                        className="text-sm md:text-base transition-colors duration-200 flex items-center gap-1 hover:opacity-80"
+                        style={{ color: '#0d9488' }}
                       >
                         View Details <span>→</span>
                       </Link>

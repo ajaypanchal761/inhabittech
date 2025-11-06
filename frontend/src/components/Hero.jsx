@@ -1,6 +1,6 @@
 function Hero() {
   return (
-    <section className="relative min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center overflow-hidden pt-20 md:pt-0">
       {/* Background Image with Dark Teal Overlay and Gradient */}
       <div className="absolute inset-0 z-0">
         {/* Background Image - Using same CSS as bg.txt */}
