@@ -24,11 +24,10 @@ const serviceIcons = [
   { name: 'server', label: 'Server' },
 ];
 
-function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
+function IconSelector({ onIconSelect, existingIconUrl }) {
   const [isOpen, setIsOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(existingIconUrl || null);
   const [selectedIconName, setSelectedIconName] = useState(null);
-  const [iconFile, setIconFile] = useState(null);
 
   // Convert Material Icon to PNG by rendering Material Symbol to canvas
   const iconToPNG = async (iconName) => {
@@ -85,7 +84,7 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
               reject(new Error('Failed to convert icon to PNG'));
             }
           }, 'image/png');
-        } catch (error) {
+        } catch {
           // Fallback: create icon with primary color, no background
           document.body.removeChild(div);
           ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -119,7 +118,6 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
 
       setPreviewUrl(preview);
       setSelectedIconName(icon.name);
-      setIconFile(pngFile);
 
       // Pass icon file and name to parent
       onIconSelect(icon.name, pngFile);
@@ -137,7 +135,6 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
     }
     setPreviewUrl(null);
     setSelectedIconName(null);
-    setIconFile(null);
     onIconSelect(null, null);
   };
 
@@ -212,8 +209,8 @@ function IconSelector({ selectedIcon, onIconSelect, existingIconUrl }) {
                       type="button"
                       onClick={() => handleIconSelect(icon)}
                       className={`p-3 rounded-lg border-2 transition-all hover:bg-bg-light hover:scale-105 ${selectedIconName === icon.name
-                          ? 'border-primary bg-primary/10'
-                          : 'border-border-gray'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border-gray'
                         } cursor-pointer`}
                       title={icon.label}
                     >
