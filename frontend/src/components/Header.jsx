@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import logo from '../assets/logo.png'
+import logo from '../assets/newlogo.png'
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -42,7 +42,11 @@ function Header() {
       <nav className="w-full px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-20 md:h-24 lg:h-28 relative">
           {/* Logo - Image from assets folder - Left side */}
-          <Link to="/" className="flex items-center flex-shrink-0 max-w-[250px] md:max-w-[300px] lg:max-w-[350px] xl:max-w-none">
+          <Link 
+            to="/" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+            className="flex items-center flex-shrink-0 max-w-[250px] md:max-w-[300px] lg:max-w-[350px] xl:max-w-none"
+          >
             <img 
               src={logo} 
               alt="Inhabit Tech Logo" 

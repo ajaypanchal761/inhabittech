@@ -114,7 +114,7 @@ function ContactUs() {
       <Header />
       
       {/* Hero Section with Background Image */}
-      <section className="pt-24 pb-16 md:pb-24 relative overflow-hidden">
+      <section className="pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24 relative overflow-hidden">
         {/* Background Image from assets */}
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"

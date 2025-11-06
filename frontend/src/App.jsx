@@ -1,5 +1,6 @@
 import './App.css'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
 import Home from './components/Home'
 import ProjectDetail from './components/ProjectDetail'
 import AboutUs from './components/AboutUs'
@@ -22,7 +23,9 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 
 function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/project/:id" element={<ProjectDetail />} />
@@ -165,7 +168,8 @@ function App() {
       {/* Redirect unknown routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
 
-    </Routes>
+      </Routes>
+    </>
   )
 }
 

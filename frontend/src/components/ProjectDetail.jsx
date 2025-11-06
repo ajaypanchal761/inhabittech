@@ -115,7 +115,7 @@ function ProjectDetail() {
     >
       <Header />
       {/* Top Navigation */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-12 md:pb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 lg:pt-32 pb-12 md:pb-16">
         <button
           onClick={() => navigate('/')}
           className="flex items-center gap-2 text-white hover:opacity-70 transition-opacity mb-6 md:mb-8"

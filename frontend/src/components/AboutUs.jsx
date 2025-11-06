@@ -91,7 +91,7 @@ function AboutUs() {
       <Header />
       
       {/* Breadcrumbs */}
-      <div className="pt-24 pb-8 bg-white">
+      <div className="pt-24 md:pt-28 lg:pt-32 pb-8 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-8">
             <Link 

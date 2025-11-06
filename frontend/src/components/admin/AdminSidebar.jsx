@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdmin } from '../../context/AdminContext';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/newlogo.png';
 
 function AdminSidebar({ isOpen, onClose }) {
   const navigate = useNavigate();
