@@ -1,12 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { serviceAPI, consultationAPI } from '../services/api'
 
 function ContactForm() {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    requirements: '',
+    company: '',
+    phone: '',
+    interest: '',
+    message: '',
   })
   const [charCount, setCharCount] = useState(0)
+  const [services, setServices] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const MAX_CHARS = 500
+
+  // Fetch active services for dropdown
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await serviceAPI.getAllServices(true) // Only active services
+        if (response.data && response.data.services) {
+          setServices(response.data.services)
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error)
+      }
+    }
+    fetchServices()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -15,8 +38,47 @@ function ContactForm() {
       [name]: value
     }))
     
-    if (name === 'requirements') {
+    if (name === 'message') {
       setCharCount(value.length)
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    
+    try {
+      const consultationData = {
+        fullName: formData.fullName,
+        email: formData.email,
+        company: formData.company || '',
+        phone: formData.phone || '',
+        consultationInterest: formData.interest || null,
+        message: formData.message
+      }
+
+      await consultationAPI.createConsultation(consultationData)
+      
+      // Reset form
+      setFormData({
+        fullName: '',
+        email: '',
+        company: '',
+        phone: '',
+        interest: '',
+        message: ''
+      })
+      setCharCount(0)
+      setSubmitted(true)
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 5000)
+    } catch (error) {
+      alert('Error submitting consultation request: ' + error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -139,14 +201,14 @@ function ContactForm() {
               border: '1px solid rgba(78, 205, 196, 0.3)',
             }}
           >
-            <form className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               {/* Full Name Field */}
               <div>
                 <label 
                   htmlFor="fullName"
                   className="block text-white text-sm md:text-base mb-2"
                 >
-                  Full Name
+                  Full Name <span style={{ color: '#E74C3C' }}>*</span>
                 </label>
                 <input
                   type="text"
@@ -154,7 +216,7 @@ function ContactForm() {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="Enter your full name"
+                  placeholder="Your full name"
                   className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4ECDC4] transition-all"
                   style={{
                     backgroundColor: 'rgba(42, 74, 74, 0.6)',
@@ -170,7 +232,7 @@ function ContactForm() {
                   htmlFor="email"
                   className="block text-white text-sm md:text-base mb-2"
                 >
-                  Email Address
+                  Email Address <span style={{ color: '#E74C3C' }}>*</span>
                 </label>
                 <input
                   type="email"
@@ -178,7 +240,7 @@ function ContactForm() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Enter your email address"
+                  placeholder="your@email.com"
                   className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4ECDC4] transition-all"
                   style={{
                     backgroundColor: 'rgba(42, 74, 74, 0.6)',
@@ -188,22 +250,104 @@ function ContactForm() {
                 />
               </div>
 
-              {/* Consultation Requirements Field */}
+              {/* Company Field */}
               <div>
                 <label 
-                  htmlFor="requirements"
+                  htmlFor="company"
                   className="block text-white text-sm md:text-base mb-2"
                 >
-                  Consultation Requirements
+                  Company
+                </label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleChange}
+                  placeholder="Your hotel/company name"
+                  className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4ECDC4] transition-all"
+                  style={{
+                    backgroundColor: 'rgba(42, 74, 74, 0.6)',
+                    border: '1px solid rgba(78, 205, 196, 0.3)',
+                  }}
+                />
+              </div>
+
+              {/* Phone Number Field */}
+              <div>
+                <label 
+                  htmlFor="phone"
+                  className="block text-white text-sm md:text-base mb-2"
+                >
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+1 (555) 123-4567"
+                  className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4ECDC4] transition-all"
+                  style={{
+                    backgroundColor: 'rgba(42, 74, 74, 0.6)',
+                    border: '1px solid rgba(78, 205, 196, 0.3)',
+                  }}
+                />
+              </div>
+
+              {/* Consultation Interest Field */}
+              <div>
+                <label 
+                  htmlFor="interest"
+                  className="block text-white text-sm md:text-base mb-2"
+                >
+                  Consultation Interest
+                </label>
+                <div className="relative">
+                  <select
+                    id="interest"
+                    name="interest"
+                    value={formData.interest}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#4ECDC4] transition-all appearance-none pr-10"
+                    style={{
+                      backgroundColor: 'rgba(42, 74, 74, 0.6)',
+                      border: '1px solid rgba(78, 205, 196, 0.3)',
+                    }}
+                  >
+                    <option value="" style={{ backgroundColor: '#2A4A4A', color: '#9CA3AF' }}>Select consultation area</option>
+                    {services.map((service) => (
+                      <option key={service._id} value={service._id} style={{ backgroundColor: '#2A4A4A', color: '#FFFFFF' }}>
+                        {service.title}
+                      </option>
+                    ))}
+                  </select>
+                  {/* Dropdown Arrow */}
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Message Field */}
+              <div>
+                <label 
+                  htmlFor="message"
+                  className="block text-white text-sm md:text-base mb-2"
+                >
+                  Message <span style={{ color: '#E74C3C' }}>*</span>
                 </label>
                 <textarea
-                  id="requirements"
-                  name="requirements"
-                  value={formData.requirements}
+                  id="message"
+                  name="message"
+                  value={formData.message}
                   onChange={handleChange}
-                  placeholder="Tell us about your technology transition needs..."
+                  placeholder="Tell us about your technology transition needs and consultation requirements...."
                   rows={5}
-                  maxLength={500}
+                  maxLength={MAX_CHARS}
                   className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4ECDC4] transition-all resize-none"
                   style={{
                     backgroundColor: 'rgba(42, 74, 74, 0.6)',
@@ -211,23 +355,26 @@ function ContactForm() {
                   }}
                   required
                 />
-                <div className="flex justify-end mt-2">
-                  <span 
-                    className="text-sm"
-                    style={{ color: '#9CA3AF' }}
-                  >
-                    {charCount}/500
-                  </span>
-                </div>
+                <p className="text-right text-sm mt-1" style={{ color: '#9CA3AF' }}>
+                  {charCount}/{MAX_CHARS} characters
+                </p>
               </div>
+
+              {/* Success Message */}
+              {submitted && (
+                <div className="p-4 rounded-lg text-white text-sm md:text-base" style={{ backgroundColor: '#10B981' }}>
+                  Thank you! Your consultation request has been submitted successfully. We'll get back to you within 24 hours.
+                </div>
+              )}
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full px-6 py-4 rounded-lg font-medium text-white text-base md:text-lg transition-all duration-200 hover:opacity-90 flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full px-6 py-4 rounded-lg font-medium text-white text-base md:text-lg transition-all duration-200 hover:opacity-90 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ backgroundColor: '#FF6B35' }}
               >
-                Get Consultation <span>→</span>
+                {loading ? 'Submitting...' : 'Get Consultation'} <span>→</span>
               </button>
             </form>
           </div>
