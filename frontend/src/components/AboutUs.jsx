@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
-import { teamAPI } from '../services/api'
+import { teamAPI, milestoneAPI } from '../services/api'
 
 function AboutUs() {
   const [teamMembers, setTeamMembers] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [milestones, setMilestones] = useState([])
+  const [teamLoading, setTeamLoading] = useState(true)
+  const [milestonesLoading, setMilestonesLoading] = useState(true)
 
   useEffect(() => {
     fetchTeamMembers()
+    fetchMilestones()
   }, [])
 
   const fetchTeamMembers = async () => {
@@ -22,7 +25,21 @@ function AboutUs() {
     } catch (error) {
       console.error('Error fetching team members:', error)
     } finally {
-      setLoading(false)
+      setTeamLoading(false)
+    }
+  }
+
+  const fetchMilestones = async () => {
+    try {
+      // Fetch only active milestones for public display
+      const response = await milestoneAPI.getAllMilestones(true)
+      if (response.data && response.data.milestones) {
+        setMilestones(response.data.milestones)
+      }
+    } catch (error) {
+      console.error('Error fetching milestones:', error)
+    } finally {
+      setMilestonesLoading(false)
     }
   }
 
@@ -67,44 +84,6 @@ function AboutUs() {
     }
   ]
 
-  const timeline = [
-    {
-      year: '2018',
-      title: 'Company Founded',
-      description: 'Started with a vision to revolutionize hospitality technology',
-      position: 'left'
-    },
-    {
-      year: '2019',
-      title: 'First Major Client',
-      description: 'Successfully integrated systems for 50-room boutique hotel',
-      position: 'right'
-    },
-    {
-      year: '2020',
-      title: 'Cloud Migration',
-      description: 'Helped 100+ hotels transition to cloud-based systems during pandemic',
-      position: 'left'
-    },
-    {
-      year: '2021',
-      title: 'AI Integration',
-      description: 'Launched AI-powered guest experience solutions',
-      position: 'right'
-    },
-    {
-      year: '2022',
-      title: 'International Expansion',
-      description: 'Expanded services to Europe and Asia markets',
-      position: 'left'
-    },
-    {
-      year: '2023',
-      title: '500+ Hotels Served',
-      description: 'Reached milestone of serving over 500 hotel properties worldwide',
-      position: 'right'
-    }
-  ]
 
   return (
     <div className="min-h-screen bg-white">
@@ -336,7 +315,7 @@ function AboutUs() {
           </p>
 
           {/* Team Member Cards */}
-          {loading ? (
+          {teamLoading ? (
             <div className="text-center py-12">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#1A2B5B] border-t-transparent mb-4"></div>
               <p style={{ color: '#6B6B6B' }}>Loading team members...</p>
@@ -413,52 +392,63 @@ function AboutUs() {
             />
 
             {/* Timeline Items */}
-            <div className="space-y-8 md:space-y-12">
-              {timeline.map((item, index) => (
-                <div 
-                  key={index}
-                  className={`flex flex-col md:flex-row items-center gap-6 md:gap-8 ${
-                    item.position === 'left' ? 'md:flex-row-reverse' : ''
-                  }`}
-                >
-                  {/* Year Circle */}
-                  <div className="flex-shrink-0 w-full md:w-1/2 flex justify-center md:justify-end">
-                    <div className="flex items-center gap-4 md:gap-6">
-                      <div 
-                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-bold text-lg md:text-xl text-white shadow-lg"
-                        style={{ backgroundColor: '#4ECDC4' }}
-                      >
-                        {item.year}
+            {milestonesLoading ? (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#1A2B5B] border-t-transparent mb-4"></div>
+                <p style={{ color: '#6B6B6B' }}>Loading milestones...</p>
+              </div>
+            ) : milestones.length === 0 ? (
+              <div className="text-center py-12">
+                <p style={{ color: '#6B6B6B' }}>No milestones available at the moment.</p>
+              </div>
+            ) : (
+              <div className="space-y-8 md:space-y-12">
+                {milestones.map((item, index) => (
+                  <div 
+                    key={item._id || index}
+                    className={`flex flex-col md:flex-row items-center gap-6 md:gap-8 ${
+                      item.position === 'left' ? 'md:flex-row-reverse' : ''
+                    }`}
+                  >
+                    {/* Year Circle */}
+                    <div className="flex-shrink-0 w-full md:w-1/2 flex justify-center md:justify-end">
+                      <div className="flex items-center gap-4 md:gap-6">
+                        <div 
+                          className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-bold text-lg md:text-xl text-white shadow-lg"
+                          style={{ backgroundColor: '#4ECDC4' }}
+                        >
+                          {item.year}
+                        </div>
+                        <div 
+                          className="w-3 h-3 rounded-full hidden md:block"
+                          style={{ backgroundColor: '#4ECDC4' }}
+                        />
                       </div>
-                      <div 
-                        className="w-3 h-3 rounded-full hidden md:block"
-                        style={{ backgroundColor: '#4ECDC4' }}
-                      />
                     </div>
-                  </div>
 
-                  {/* Content Card */}
-                  <div className="w-full md:w-1/2">
-                    <div 
-                      className="p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm bg-white"
-                    >
-                      <h3 
-                        className="text-xl md:text-2xl font-extrabold mb-3"
-                        style={{ color: '#1A2B5B' }}
+                    {/* Content Card */}
+                    <div className="w-full md:w-1/2">
+                      <div 
+                        className="p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm bg-white"
                       >
-                        {item.title}
-                      </h3>
-                      <p 
-                        className="text-base md:text-lg leading-relaxed"
-                        style={{ color: '#6B6B6B' }}
-                      >
-                        {item.description}
-                      </p>
+                        <h3 
+                          className="text-xl md:text-2xl font-extrabold mb-3"
+                          style={{ color: '#1A2B5B' }}
+                        >
+                          {item.title}
+                        </h3>
+                        <p 
+                          className="text-base md:text-lg leading-relaxed"
+                          style={{ color: '#6B6B6B' }}
+                        >
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

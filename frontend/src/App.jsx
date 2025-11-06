@@ -9,10 +9,14 @@ import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AdminProjects from './components/admin/AdminProjects'
 import AdminTeam from './components/admin/AdminTeam'
+import AdminMilestones from './components/admin/AdminMilestones'
+import AdminServices from './components/admin/AdminServices'
 import AdminManageAdmins from './components/admin/AdminManageAdmins'
 import AdminSettings from './components/admin/AdminSettings'
 import ProjectForm from './components/admin/ProjectForm'
 import TeamForm from './components/admin/TeamForm'
+import MilestoneForm from './components/admin/MilestoneForm'
+import ServiceForm from './components/admin/ServiceForm'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 
 function App() {
@@ -81,6 +85,54 @@ function App() {
         element={
           <ProtectedRoute>
             <TeamForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/milestones"
+        element={
+          <ProtectedRoute>
+            <AdminMilestones />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/milestones/create"
+        element={
+          <ProtectedRoute>
+            <MilestoneForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/milestones/edit/:id"
+        element={
+          <ProtectedRoute>
+            <MilestoneForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/services"
+        element={
+          <ProtectedRoute>
+            <AdminServices />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/services/create"
+        element={
+          <ProtectedRoute>
+            <ServiceForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/services/edit/:id"
+        element={
+          <ProtectedRoute>
+            <ServiceForm />
           </ProtectedRoute>
         }
       />

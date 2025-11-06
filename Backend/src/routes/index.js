@@ -2,6 +2,8 @@ import express from 'express';
 import adminRoutes from './adminRoutes.js';
 import projectRoutes from './projectRoutes.js';
 import teamRoutes from './teamRoutes.js';
+import milestoneRoutes from './milestoneRoutes.js';
+import serviceRoutes from './serviceRoutes.js';
 
 const router = express.Router();
 
@@ -13,6 +15,12 @@ router.use('/projects', projectRoutes);
 
 // Team routes
 router.use('/team', teamRoutes);
+
+// Milestone routes
+router.use('/milestones', milestoneRoutes);
+
+// Service routes
+router.use('/services', serviceRoutes);
 
 // Base route
 router.get('/', (req, res) => {

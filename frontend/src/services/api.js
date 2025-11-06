@@ -9,13 +9,16 @@ const getToken = () => {
 const apiRequest = async (endpoint, options = {}) => {
   const token = getToken();
   
+  // Merge headers properly - ensure Authorization and Content-Type are set correctly
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...(options.headers || {}),
+  };
+
   const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    },
     ...options,
+    headers: headers,
   };
 
   try {
@@ -317,6 +320,126 @@ export const teamAPI = {
   // Delete team member (protected)
   deleteTeamMember: async (id) => {
     return apiRequest(`/team/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+// Milestone API methods
+export const milestoneAPI = {
+  // Get all milestones (public)
+  getAllMilestones: async (isActive = null) => {
+    const token = getToken();
+    let url = `${API_BASE_URL}/milestones`;
+    
+    // Only add isActive query param if it's explicitly provided
+    if (isActive !== null && isActive !== undefined) {
+      url += `?isActive=${isActive}`;
+    }
+    
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    };
+    const response = await fetch(url, config);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
+  },
+
+  // Get milestone by ID (public)
+  getMilestoneById: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/milestones/${id}`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
+  },
+
+  // Create milestone (protected)
+  createMilestone: async (milestoneData) => {
+    return apiRequest('/milestones', {
+      method: 'POST',
+      body: JSON.stringify(milestoneData),
+    });
+  },
+
+  // Update milestone (protected)
+  updateMilestone: async (id, milestoneData) => {
+    return apiRequest(`/milestones/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(milestoneData),
+    });
+  },
+
+  // Delete milestone (protected)
+  deleteMilestone: async (id) => {
+    return apiRequest(`/milestones/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+// Service API methods
+export const serviceAPI = {
+  // Get all services (public)
+  getAllServices: async (isActive = null) => {
+    const token = getToken();
+    let url = `${API_BASE_URL}/services`;
+    
+    // Only add isActive query param if it's explicitly provided
+    if (isActive !== null && isActive !== undefined) {
+      url += `?isActive=${isActive}`;
+    }
+    
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    };
+    const response = await fetch(url, config);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
+  },
+
+  // Get service by ID (public)
+  getServiceById: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/services/${id}`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
+  },
+
+  // Create service (protected)
+  createService: async (serviceData) => {
+    return apiRequest('/services', {
+      method: 'POST',
+      body: JSON.stringify(serviceData),
+    });
+  },
+
+  // Update service (protected)
+  updateService: async (id, serviceData) => {
+    return apiRequest(`/services/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(serviceData),
+    });
+  },
+
+  // Delete service (protected)
+  deleteService: async (id) => {
+    return apiRequest(`/services/${id}`, {
       method: 'DELETE',
     });
   },
