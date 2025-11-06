@@ -1,0 +1,31 @@
+services:
+  # Backend API Service
+  - type: web
+    name: inhabittech-backend
+    env: node
+    plan: free
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      # Add your other environment variables here (MongoDB URI, JWT secret, etc.)
+      # - key: MONGODB_URI
+      #   sync: false
+      # - key: JWT_SECRET
+      #   sync: false
+
+  # Frontend Service (Static Site)
+  - type: static
+    name: inhabittech-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Add your API URL here
+      # - key: VITE_API_URL
+      #   value: https://inhabittech-backend.onrender.com
+
