@@ -90,32 +90,51 @@ function AboutUs() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      {/* Breadcrumbs */}
-      <div className="pt-24 md:pt-28 lg:pt-32 pb-8 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-8">
-            <Link 
-              to="/" 
-              className="text-sm md:text-base flex items-center gap-2"
-              style={{ color: '#3B82F6' }}
+      {/* Intro Section */}
+      <section className="relative overflow-hidden pt-28 md:pt-32 lg:pt-40 pb-12 md:pb-16" style={{ background: 'linear-gradient(135deg, #0D4A3A 0%, #1E6F5C 50%, #10918B 100%)' }}>
+        <div className="absolute -top-24 right-0 w-56 h-56 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-0 -left-20 w-64 h-64 rounded-full bg-[#4ECDC4]/20 blur-3xl" aria-hidden="true" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl text-white">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-8">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-sm md:text-base font-medium px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Home
             </Link>
-            <span 
-              className="px-3 py-1 rounded-full text-sm md:text-base font-medium"
-              style={{ 
-                backgroundColor: '#E0F7F5',
-                color: '#3B82F6'
-              }}
-            >
+            <span className="px-4 py-2 rounded-full text-sm md:text-base font-medium bg-white/20">
               About Our Company
             </span>
           </div>
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wide bg-white/15">
+            About Inhabit Tech
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mt-4 mb-6">
+            Bringing Technology Together.
+          </h1>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <div className="space-y-4 text-base md:text-lg leading-relaxed text-white/85">
+              <p>
+                Founded in 2012, Inhabit Tech is a specialist IT project management and consultancy company based in the UK.
+              </p>
+              <p>
+                We focus primarily on the hospitality industry, delivering intelligent, connected technology solutions for hotels, resorts, restaurants, and leisure destinations.
+              </p>
+            </div>
+            <div className="space-y-4 text-base md:text-lg leading-relaxed text-white/85">
+              <p>
+                While hospitality is at the heart of what we do, we also deliver select projects in offices, residential developments, and accommodation spaces—applying our expertise to create efficient, future-ready environments. <Link to="/projects" className="underline font-medium text-white">View our projects</Link> for more.
+              </p>
+              <p>
+                Formerly known as Fluent2 Projects Limited, our new name reflects what we do best: helping people inhabit spaces where technology and comfort work in harmony.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Hero Section */}
       <section className="py-12 md:py-16 bg-white">
@@ -308,12 +327,20 @@ function AboutUs() {
           >
             Meet Our Team
           </h2>
-          <p 
-            className="text-base md:text-lg text-center mb-12 md:mb-16 max-w-3xl mx-auto"
-            style={{ color: '#6B6B6B' }}
-          >
-            Industry experts passionate about hospitality technology
-          </p>
+          <div className="space-y-4 text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+            <p 
+              className="text-base md:text-lg"
+              style={{ color: '#6B6B6B' }}
+            >
+              We’re a small, dedicated team of IT project managers and consultants based mainly in the UK, combining technical expertise with hands-on project delivery.
+            </p>
+            <p 
+              className="text-base md:text-lg"
+              style={{ color: '#6B6B6B' }}
+            >
+              Our agility and experience allow us to build lasting relationships with clients — delivering technology that simply works.
+            </p>
+          </div>
 
           {/* Team Member Cards */}
           {teamLoading ? (

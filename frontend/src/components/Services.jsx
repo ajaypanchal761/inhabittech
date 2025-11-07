@@ -35,6 +35,29 @@ function Services() {
   // Get current service based on active tab
   const currentService = services.find(s => s._id === activeTab) || services[0] || null
 
+  const overviewHighlights = [
+    {
+      title: 'Technology Strategy & Planning',
+      description: 'Aligning IT infrastructure with business goals and guest experiences.'
+    },
+    {
+      title: 'Systems Integration',
+      description: 'Bringing together PMS, POS, IPTV, access control, and communication systems seamlessly.'
+    },
+    {
+      title: 'Project Management',
+      description: 'Coordinating complex technology rollouts, refurbishments, and new builds.'
+    },
+    {
+      title: 'Procurement & Budget Management',
+      description: 'Managing costs, sourcing solutions, and ensuring financial transparency throughout every stage of a project.'
+    },
+    {
+      title: 'Vendor Management',
+      description: 'Ensuring quality, value, and consistency across every supplier relationship.'
+    }
+  ]
+
   // Render icon from service data or default icon
   const renderIcon = (service, isWhite = false) => {
     if (service?.icon?.url) {
@@ -63,35 +86,72 @@ function Services() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      {/* Breadcrumbs */}
-      <div className="pt-24 md:pt-28 lg:pt-32 pb-8 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-8">
+      {/* Overview Section */}
+      <section
+        className="relative overflow-hidden pt-28 md:pt-32 lg:pt-36 pb-16 md:pb-20"
+        style={{ background: 'linear-gradient(135deg, #0D4A3A 0%, #1E6F5C 60%, #10918B 100%)' }}
+      >
+        <div className="absolute -top-24 right-0 w-56 h-56 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-0 -left-20 w-64 h-64 rounded-full bg-[#4ECDC4]/20 blur-3xl" aria-hidden="true" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl text-white">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-10">
             <Link
               to="/"
-              className="text-sm md:text-base flex items-center gap-2"
-              style={{ color: '#6B6B6B' }}
+              className="flex items-center gap-2 text-sm md:text-base font-medium px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
+              style={{ color: '#FFFFFF' }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Home
             </Link>
-            <span
-              className="px-3 py-1 rounded-full text-sm md:text-base font-medium flex items-center gap-2"
-              style={{
-                backgroundColor: '#E0F7F5',
-                color: '#1A2B5B'
-              }}
-            >
+            <span className="flex items-center gap-2 px-4 py-2 rounded-full text-sm md:text-base font-medium bg-white/20 text-white">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               Detailed Services Overview
             </span>
           </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm font-semibold bg-white/15 uppercase tracking-wide">
+                What We Do
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mt-4 mb-6">
+                End-to-End Hospitality Technology Delivery
+              </h2>
+              <p className="text-base md:text-lg leading-relaxed text-white/85 mb-6">
+                We provide end-to-end IT consultancy and project management services, ensuring every system is designed,
+                delivered, and integrated with precision.
+              </p>
+              <p className="text-base md:text-lg leading-relaxed text-white/80">
+                Our expertise covers the complete lifecycle of guest-facing and back-of-house technology, giving owners and
+                operators a single, accountable partner for every phase.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 lg:gap-6">
+              {overviewHighlights.map((item) => (
+                <div
+                  key={item.title}
+                  className="bg-white/10 border border-white/15 rounded-2xl p-6 flex flex-col h-full shadow-[0_20px_45px_-20px_rgba(0,0,0,0.45)] backdrop-blur"
+                >
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: '#4ECDC4' }}>
+                    <svg className="w-6 h-6 text-[#0D4A3A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg md:text-xl font-semibold mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm md:text-base leading-relaxed text-white/85">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Hero Section */}
       <section className="py-8 md:py-12 bg-white">

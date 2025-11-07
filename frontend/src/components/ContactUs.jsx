@@ -113,49 +113,58 @@ function ContactUs() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      {/* Hero Section with Background Image */}
-      <section className="pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24 relative overflow-hidden">
-        {/* Background Image from assets */}
-        <div 
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url(${heroImage})`,
-            opacity: 0.5
-          }}
-        ></div>
-        <div className="absolute inset-0 bg-white bg-opacity-20"></div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Breadcrumbs - Centered */}
-          <div className="flex items-center justify-center gap-4 mb-8">
+      {/* Intro Section */}
+      <section className="pt-24 md:pt-28 lg:pt-32 pb-14 md:pb-18 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0D4A3A 0%, #1E6F5C 55%, #10918B 100%)' }}>
+        <div className="absolute -top-24 right-0 w-56 h-56 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-0 -left-20 w-64 h-64 rounded-full bg-[#4ECDC4]/20 blur-3xl" aria-hidden="true" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl text-white text-center">
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
             <Link 
               to="/" 
-              className="text-sm md:text-base flex items-center gap-2"
-              style={{ color: '#1A1A1A' }}
+              className="flex items-center gap-2 text-sm md:text-base font-medium px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Home
             </Link>
-            <span 
-              className="text-sm md:text-base flex items-center gap-2"
-              style={{ color: '#2A7F7F' }}
-            >
+            <span className="px-4 py-2 rounded-full text-sm md:text-base font-medium bg-white/20">
               Get In Touch
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
             </span>
           </div>
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wide bg-white/15">
+            Let’s Build Connected Experiences
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mt-4 mb-6">
+            Together, We Design Technology That Works Hard and Feels Effortless
+          </h1>
+          <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white/85 max-w-3xl mx-auto mb-6">
+            From back-of-house infrastructure to guest-facing technology, we help you create spaces that work smarter and feel better.
+          </p>
+          <p className="text-base md:text-lg leading-relaxed text-white/85 max-w-3xl mx-auto">
+            Get in touch with the Inhabit Tech team to discuss your next project — and discover how we can help bring your vision to life. To get in touch, please visit our Contact Us page, where you’ll find all of our contact details.
+          </p>
+        </div>
+      </section>
 
-          {/* Hero Title and Subtitle */}
+      {/* Hero Section with Background Image */}
+      <section className="pb-16 md:pb-24 relative overflow-hidden">
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${heroImage})`,
+            opacity: 0.5
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-white bg-opacity-20"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 md:mb-8"
+            <h2 
+              className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 md:mb-8"
               style={{ color: '#1A2B5B' }}
             >
               Get Expert Consultation
-            </h1>
+            </h2>
             <p 
               className="text-base md:text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
               style={{ color: '#1A1A1A' }}
@@ -553,3 +562,4 @@ function ContactUs() {
 }
 
 export default ContactUs
+

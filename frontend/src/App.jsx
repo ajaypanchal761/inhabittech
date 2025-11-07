@@ -6,6 +6,7 @@ import ProjectDetail from './components/ProjectDetail'
 import AboutUs from './components/AboutUs'
 import Services from './components/Services'
 import ContactUs from './components/ContactUs'
+import WhyInhabitTech from './components/WhyInhabitTech'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AdminProjects from './components/admin/AdminProjects'
@@ -29,6 +30,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/project/:id" element={<ProjectDetail />} />
       <Route path="/about" element={<AboutUs />} />
+      <Route path="/why-inhabit-tech" element={<WhyInhabitTech />} />
       <Route path="/services" element={<Services />} />
       <Route path="/contact" element={<ContactUs />} />
 

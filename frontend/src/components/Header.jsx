@@ -10,6 +10,7 @@ function Header() {
   const isServicesPage = location.pathname === '/services'
   const isContactPage = location.pathname === '/contact'
   const isHomePage = location.pathname === '/'
+  const isWhyPage = location.pathname === '/why-inhabit-tech'
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -75,6 +76,16 @@ function Header() {
               }`}
             >
               About
+            </Link>
+            <Link 
+              to="/why-inhabit-tech" 
+              className={`transition-colors duration-200 font-medium text-sm lg:text-base whitespace-nowrap px-3 py-1 rounded ${
+                isWhyPage 
+                  ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
+                  : 'text-white hover:text-[#4ECDC4]'
+              }`}
+            >
+              Why Inhabit Tech
             </Link>
             <Link 
               to="/services" 
@@ -145,6 +156,17 @@ function Header() {
                 }`}
               >
                 About
+              </Link>
+              <Link 
+                to="/why-inhabit-tech"
+                onClick={() => setIsMenuOpen(false)}
+                className={`transition-colors duration-200 font-medium text-base py-2 px-3 rounded ${
+                  isWhyPage 
+                    ? 'bg-[#4ECDC4] text-[#0D4A3A]' 
+                    : 'text-white hover:text-[#4ECDC4]'
+                }`}
+              >
+                Why Inhabit Tech
               </Link>
               <Link 
                 to="/services"
