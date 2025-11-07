@@ -16,6 +16,7 @@ const teamSchema = new mongoose.Schema({
     required: [true, 'Description is required'],
     trim: true
   },
+
   image: {
     url: {
       type: String,
